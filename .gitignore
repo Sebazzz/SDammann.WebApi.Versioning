@@ -24,6 +24,7 @@ _ReSharper.*
 *.rar
 *.tar
 *.zip
+packages
 
 # OS generated files #
 ######################
