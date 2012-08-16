@@ -1,5 +1,6 @@
 ﻿namespace SDammann.WebApi.Versioning {
     using System;
+    using System.Globalization;
     using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
@@ -41,7 +42,7 @@
                 apiVersion = version;
             }
 
-            return new ControllerIdentification(controllerName.ToString(), apiVersion);
+            return new ControllerIdentification(controllerName, apiVersion);
         }
     }
 }
