@@ -19,14 +19,14 @@
         public RouteVersionedControllerSelector (HttpConfiguration configuration) : base(configuration) {
         }
 
-        protected override ControllerName GetControllerName (HttpRequestMessage request) {
+        protected override ControllerIdentification GetControllerIdentificationFromRequest (HttpRequestMessage request) {
             if (request == null) {
                 throw new ArgumentNullException("request");
             }
 
             IHttpRouteData routeData = request.GetRouteData();
             if (routeData == null) {
-                return default(ControllerName);
+                return default(ControllerIdentification);
             }
 
             // Look up controller in route data
@@ -41,7 +41,7 @@
                 apiVersion = version;
             }
 
-            return new ControllerName(controllerName.ToString(), apiVersion);
+            return new ControllerIdentification(controllerName.ToString(), apiVersion);
         }
     }
 }

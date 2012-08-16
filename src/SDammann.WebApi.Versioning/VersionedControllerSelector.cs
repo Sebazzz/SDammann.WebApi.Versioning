@@ -24,7 +24,7 @@
         public static readonly string VersionPrefix = "Version";
 
         private readonly HttpConfiguration _configuration;
-        private readonly Lazy<ConcurrentDictionary<ControllerName, HttpControllerDescriptor>> _controllerInfoCache;
+        private readonly Lazy<ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor>> _controllerInfoCache;
         private readonly HttpControllerTypeCache _controllerTypeCache;
 
         /// <summary>
@@ -37,7 +37,7 @@
             }
 
             this._controllerInfoCache =
-                    new Lazy<ConcurrentDictionary<ControllerName, HttpControllerDescriptor>>(this.InitializeControllerInfoCache);
+                    new Lazy<ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor>>(this.InitializeControllerInfoCache);
             this._configuration = configuration;
             this._controllerTypeCache = new HttpControllerTypeCache(this._configuration);
         }
@@ -52,7 +52,7 @@
                 throw new ArgumentNullException("request");
             }
 
-            ControllerName controllerName = this.GetControllerName(request);
+            ControllerIdentification controllerName = this.GetControllerIdentificationFromRequest(request);
             if (String.IsNullOrEmpty(controllerName.Name)) {
                 throw new HttpResponseException(request.CreateResponse(HttpStatusCode.NotFound));
             }
@@ -111,7 +111,7 @@
             return controllerName.ToString();
         }
 
-        protected abstract ControllerName GetControllerName (HttpRequestMessage request);
+        protected abstract ControllerIdentification GetControllerIdentificationFromRequest (HttpRequestMessage request);
 
         private static string CreateAmbiguousControllerExceptionMessage(IHttpRoute route, string controllerName,
                                                                          IEnumerable<Type> matchingTypes) {
@@ -132,13 +132,13 @@
                                  typeList);
         }
 
-        private ConcurrentDictionary<ControllerName, HttpControllerDescriptor> InitializeControllerInfoCache() {
-            var result = new ConcurrentDictionary<ControllerName, HttpControllerDescriptor>(ControllerName.Comparer);
-            var duplicateControllers = new HashSet<ControllerName>();
-            Dictionary<ControllerName, ILookup<string, Type>> controllerTypeGroups = this._controllerTypeCache.Cache;
+        private ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor> InitializeControllerInfoCache() {
+            var result = new ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor>(ControllerIdentification.Comparer);
+            var duplicateControllers = new HashSet<ControllerIdentification>();
+            Dictionary<ControllerIdentification, ILookup<string, Type>> controllerTypeGroups = this._controllerTypeCache.Cache;
 
-            foreach (KeyValuePair<ControllerName, ILookup<string, Type>> controllerTypeGroup in controllerTypeGroups) {
-                ControllerName controllerName = controllerTypeGroup.Key;
+            foreach (KeyValuePair<ControllerIdentification, ILookup<string, Type>> controllerTypeGroup in controllerTypeGroups) {
+                ControllerIdentification controllerName = controllerTypeGroup.Key;
 
                 foreach (IGrouping<string, Type> controllerTypesGroupedByNs in controllerTypeGroup.Value) {
                     foreach (Type controllerType in controllerTypesGroupedByNs) {
@@ -153,7 +153,7 @@
                 }
             }
 
-            foreach (ControllerName duplicateController in duplicateControllers) {
+            foreach (ControllerIdentification duplicateController in duplicateControllers) {
                 HttpControllerDescriptor descriptor;
                 result.TryRemove(duplicateController, out descriptor);
             }

@@ -22,7 +22,7 @@
         public VersionHeaderVersionedControllerSelector (HttpConfiguration configuration) : base(configuration) {
         }
 
-        protected override ControllerName GetControllerName (HttpRequestMessage request) {
+        protected override ControllerIdentification GetControllerIdentificationFromRequest (HttpRequestMessage request) {
             if (request == null) {
                 throw new ArgumentNullException("request");
             }
@@ -42,7 +42,7 @@
 
             string controllerName = this.GetControllerNameFromRequest(request);
 
-            return new ControllerName(controllerName, apiVersion);
+            return new ControllerIdentification(controllerName, apiVersion);
         }
     }
 }

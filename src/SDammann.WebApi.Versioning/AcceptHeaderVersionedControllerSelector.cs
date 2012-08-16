@@ -24,7 +24,7 @@ namespace SDammann.WebApi.Versioning {
         protected AcceptHeaderVersionedControllerSelector(HttpConfiguration configuration) : base(configuration) {
         }
 
-        protected override ControllerName GetControllerName(HttpRequestMessage request) {
+        protected override ControllerIdentification GetControllerIdentificationFromRequest(HttpRequestMessage request) {
             if (request == null) {
                 throw new ArgumentNullException("request");
             }
@@ -35,7 +35,7 @@ namespace SDammann.WebApi.Versioning {
 
             string controllerName = this.GetControllerNameFromRequest(request);
 
-            return new ControllerName(controllerName, apiVersion);
+            return new ControllerIdentification(controllerName, apiVersion);
         }
 
         /// <summary>

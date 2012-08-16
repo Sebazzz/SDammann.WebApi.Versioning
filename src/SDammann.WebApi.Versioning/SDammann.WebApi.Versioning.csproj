@@ -67,7 +67,7 @@
     <Compile Include="AcceptHeaderVersionedControllerSelector.cs" />
     <Compile Include="RouteVersionedControllerSelector.cs" />
     <Compile Include="VersionedControllerSelector.cs" />
-    <Compile Include="ControllerName.cs" />
+    <Compile Include="ControllerIdentification.cs" />
     <Compile Include="HttpControllerTypeCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VersionHeaderVersionedControllerSelector.cs" />

@@ -11,10 +11,10 @@ namespace SDammann.WebApi.Versioning {
     ///   Manages a cache of <see cref="System.Web.Http.Controllers.IHttpController" /> types detected in the system.
     /// </summary>
     internal sealed class HttpControllerTypeCache {
-        private readonly Lazy<Dictionary<ControllerName, ILookup<string, Type>>> _cache;
+        private readonly Lazy<Dictionary<ControllerIdentification, ILookup<string, Type>>> _cache;
         private readonly HttpConfiguration _configuration;
 
-        internal Dictionary<ControllerName, ILookup<string, Type>> Cache {
+        internal Dictionary<ControllerIdentification, ILookup<string, Type>> Cache {
             get { return this._cache.Value; }
         }
 
@@ -24,10 +24,10 @@ namespace SDammann.WebApi.Versioning {
             }
 
             this._configuration = configuration;
-            this._cache = new Lazy<Dictionary<ControllerName, ILookup<string, Type>>>(this.InitializeCache);
+            this._cache = new Lazy<Dictionary<ControllerIdentification, ILookup<string, Type>>>(this.InitializeCache);
         }
 
-        public ICollection<Type> GetControllerTypes(ControllerName controllerName) {
+        public ICollection<Type> GetControllerTypes(ControllerIdentification controllerName) {
             if (String.IsNullOrEmpty(controllerName.Name)) {
                 throw new ArgumentNullException("controllerName");
             }
@@ -44,22 +44,22 @@ namespace SDammann.WebApi.Versioning {
             return matchingTypes;
         }
 
-        private Dictionary<ControllerName, ILookup<string, Type>> InitializeCache() {
+        private Dictionary<ControllerIdentification, ILookup<string, Type>> InitializeCache() {
             IAssembliesResolver assembliesResolver = this._configuration.Services.GetAssembliesResolver();
             IHttpControllerTypeResolver controllersResolver = this._configuration.Services.GetHttpControllerTypeResolver();
 
             ICollection<Type> controllerTypes = controllersResolver.GetControllerTypes(assembliesResolver);
-            IEnumerable<IGrouping<ControllerName, Type>> groupedByName = controllerTypes.GroupBy(
+            IEnumerable<IGrouping<ControllerIdentification, Type>> groupedByName = controllerTypes.GroupBy(
                                                                                                  this.GetControllerName,
-                                                                                                 ControllerName.Comparer);
+                                                                                                 ControllerIdentification.Comparer);
 
             return groupedByName.ToDictionary(
                                               g => g.Key,
                                               g => g.ToLookup(t => t.Namespace ?? String.Empty, StringComparer.OrdinalIgnoreCase),
-                                              ControllerName.Comparer);
+                                              ControllerIdentification.Comparer);
         }
 
-        private ControllerName GetControllerName(Type type) {
+        private ControllerIdentification GetControllerName(Type type) {
             string fullName = type.FullName;
             Debug.Assert(fullName != null);
 
@@ -86,7 +86,7 @@ namespace SDammann.WebApi.Versioning {
                 }
             }
 
-            return new ControllerName(name, version);
+            return new ControllerIdentification(name, version);
         }
     }
 }

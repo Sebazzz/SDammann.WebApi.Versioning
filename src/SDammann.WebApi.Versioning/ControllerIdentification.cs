@@ -7,13 +7,13 @@ namespace SDammann.WebApi.Versioning {
     /// <summary>
     /// Represents a controller name with an associated version
     /// </summary>
-    public struct ControllerName : IEquatable<ControllerName> {
-        private static readonly Lazy<IEqualityComparer<ControllerName>> ComparerInstance = new Lazy<IEqualityComparer<ControllerName>>(() => new ControllerNameComparer());
+    public struct ControllerIdentification : IEquatable<ControllerIdentification> {
+        private static readonly Lazy<IEqualityComparer<ControllerIdentification>> ComparerInstance = new Lazy<IEqualityComparer<ControllerIdentification>>(() => new ControllerNameComparer());
 
         /// <summary>
-        /// Gets an comparer for comparing <see cref="ControllerName"/> instances
+        /// Gets an comparer for comparing <see cref="ControllerIdentification"/> instances
         /// </summary>
-        public static IEqualityComparer<ControllerName> Comparer {
+        public static IEqualityComparer<ControllerIdentification> Comparer {
             get { return ComparerInstance.Value; }
         }
 
@@ -31,24 +31,24 @@ namespace SDammann.WebApi.Versioning {
         public int? Version { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ControllerName"/> struct.
+        /// Initializes a new instance of the <see cref="ControllerIdentification"/> struct.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="version">The version.</param>
-        public ControllerName(string name, int? version)
+        public ControllerIdentification(string name, int? version)
                 : this() {
             this.Name = name;
             this.Version = version;
         }
 
-        public bool Equals(ControllerName other) {
+        public bool Equals(ControllerIdentification other) {
             return StringComparer.InvariantCultureIgnoreCase.Equals(other.Name, this.Name) &&
                    other.Version == this.Version;
         }
 
         public override bool Equals(object obj) {
-            if (obj is ControllerName) {
-                ControllerName cn = (ControllerName)obj;
+            if (obj is ControllerIdentification) {
+                ControllerIdentification cn = (ControllerIdentification)obj;
                 return this.Equals(cn);
             }
 
@@ -67,12 +67,12 @@ namespace SDammann.WebApi.Versioning {
             return VersionedControllerSelector.VersionPrefix + this.Version.Value.ToString(CultureInfo.InvariantCulture) + "." + this.Name;
         }
 
-        private class ControllerNameComparer : IEqualityComparer<ControllerName> {
-            public bool Equals(ControllerName x, ControllerName y) {
+        private class ControllerNameComparer : IEqualityComparer<ControllerIdentification> {
+            public bool Equals(ControllerIdentification x, ControllerIdentification y) {
                 return x.Equals(y);
             }
 
-            public int GetHashCode(ControllerName obj) {
+            public int GetHashCode(ControllerIdentification obj) {
                 return obj.GetHashCode();
             }
         }
