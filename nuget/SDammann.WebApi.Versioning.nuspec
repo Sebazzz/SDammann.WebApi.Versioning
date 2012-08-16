@@ -11,6 +11,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Library for API versioning support in Microsoft ASP.NET Web API</description>
     <tags>aspnet webapi versioning</tags>
+	
+	<releaseNotes>
+	Version 1.1:
+	- Initial nuget package release
+	</releaseNotes>
 
     <dependencies>
       <dependency id="Microsoft.AspNet.WebApi.Core" />
@@ -18,13 +23,15 @@
       <dependency id="Newtonsoft.Json" />
     </dependencies>
 
-	<files>
-		<file src="../SDammann.WebApi.Versioning/bin/Release/SDammann.WebApi.Versioning.dll" target="lib" />
-		<file src="../SDammann.WebApi.Versioning/bin/Release/SDammann.WebApi.Versioning.pdb" target="lib" />
-		<file src="../SDammann.WebApi.Versioning/bin/Release/SDammann.WebApi.Versioning.xml" target="lib" />
-
-		<file src="../.nuget/Readme.txt" target="" />
-		<file src="../../LICENSE" target="" />
-	</files>
+	
   </metadata>
+
+  <files>
+		<file src="..\src\SDammann.WebApi.Versioning\bin\net40\Release\SDammann.WebApi.Versioning.dll" target="lib\net40" />
+		<file src="..\src\SDammann.WebApi.Versioning\bin\net40\Release\SDammann.WebApi.Versioning.pdb" target="lib\net40" />
+		<file src="..\src\SDammann.WebApi.Versioning\bin\net40\Release\SDammann.WebApi.Versioning.xml" target="lib\net40" />
+
+		<file src="..\nuget\Readme.txt" />
+		<file src="..\LICENSE" />
+	</files>
 </package>
