@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptHeaderVersionedControllerSelector.cs" />
     <Compile Include="RouteVersionedControllerSelector.cs" />
     <Compile Include="VersionedControllerSelector.cs" />
     <Compile Include="ControllerName.cs" />

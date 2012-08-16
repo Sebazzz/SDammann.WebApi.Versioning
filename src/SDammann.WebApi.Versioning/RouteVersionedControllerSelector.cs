@@ -30,8 +30,7 @@
             }
 
             // Look up controller in route data
-            object controllerName;
-            routeData.Values.TryGetValue(ControllerKey, out controllerName);
+            string controllerName = this.GetControllerNameFromRequest(request);
 
             // Also try the version if possible
             object apiVersionObj;

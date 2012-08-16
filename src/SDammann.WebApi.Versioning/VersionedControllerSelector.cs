@@ -88,6 +88,29 @@
 
         #endregion
 
+
+        /// <summary>
+        /// Gets the name of the controller from the request route date
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        protected string GetControllerNameFromRequest(HttpRequestMessage request) {
+            if (request == null) {
+                throw new ArgumentNullException("request");
+            }
+
+            IHttpRouteData routeData = request.GetRouteData();
+            if (routeData == null) {
+                return default(String);
+            }
+
+            // Look up controller in route data
+            object controllerName;
+            routeData.Values.TryGetValue(ControllerKey, out controllerName);
+
+            return controllerName.ToString();
+        }
+
         protected abstract ControllerName GetControllerName (HttpRequestMessage request);
 
         private static string CreateAmbiguousControllerExceptionMessage(IHttpRoute route, string controllerName,
