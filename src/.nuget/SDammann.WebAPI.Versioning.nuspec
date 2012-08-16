@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SDammann.WebApi.Versioning</id>
+	<title>ASP.NET Web API versioning support</title>
+    <version>1.1</version>
+    <authors>Sebastiaan Dammann</authors>
+    <owners>Sebastiaan Dammann</owners>
+    <licenseUrl>https://github.com/Sebazzz/SDammann.WebApi.Versioning/raw/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Sebazzz/SDammann.WebApi.Versioning</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Library for API versioning support in Microsoft ASP.NET Web API</description>
+    <tags>aspnet webapi versioning</tags>
+
+    <dependencies>
+      <dependency id="Microsoft.AspNet.WebApi.Core" />
+      <dependency id="Microsoft.Web.Infrastructure" />
+      <dependency id="Newtonsoft.Json" />
+    </dependencies>
+
+	<files>
+		<file src="../SDammann.WebApi.Versioning/bin/Release/SDammann.WebApi.Versioning.dll" target="lib" />
+		<file src="../SDammann.WebApi.Versioning/bin/Release/SDammann.WebApi.Versioning.pdb" target="lib" />
+		<file src="../SDammann.WebApi.Versioning/bin/Release/SDammann.WebApi.Versioning.xml" target="lib" />
+
+		<file src="../.nuget/Readme.txt" target="" />
+		<file src="../../LICENSE" target="" />
+	</files>
+  </metadata>
+</package>

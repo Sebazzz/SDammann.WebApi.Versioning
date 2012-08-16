@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SDammann.WebApi.Versioning")]
+[assembly: AssemblyTitle("ASP.NET Web API Versioning module")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DevDammann.nl")]
-[assembly: AssemblyProduct("SDammann.WebApi.Versioning")]
-[assembly: AssemblyCopyright("Copyright © DevDammann.nl 2012")]
+[assembly: AssemblyCompany("Damsteen.nl")]
+[assembly: AssemblyProduct("ASP.NET Web API Versioning")]
+[assembly: AssemblyCopyright("Copyright © Sebastiaan Dammann 2012 - 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
