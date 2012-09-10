@@ -63,7 +63,7 @@ namespace SDammann.WebApi.Versioning {
             string fullName = type.FullName;
             Debug.Assert(fullName != null);
 
-            fullName = fullName.Substring(0, fullName.Length - DefaultHttpControllerSelector.ControllerSuffix.Length);
+            fullName = fullName.Substring(0, fullName.Length - VersionedControllerSelector.ControllerSuffix.Length);
 
             // split by dot and find version
             string[] nameSplit = fullName.Split('.');

@@ -19,9 +19,46 @@
     ///   How the actual controller to be invoked is determined, is up to the derived class to implement.
     /// </summary>
     public abstract class VersionedControllerSelector : IHttpControllerSelector {
+        private static string _VersionPrefix = "Version";
+        private static bool IsControllerCacheInitialized = false;
+
         protected const string ControllerKey = "controller";
-        public static readonly string ControllerSuffix = "Controller";
-        public static readonly string VersionPrefix = "Version";
+        /// <summary>
+        /// Gets the suffix in the Controller <see cref="Type"/>s <see cref="Type.Name"/>
+        /// </summary>
+        public static readonly string ControllerSuffix = DefaultHttpControllerSelector.ControllerSuffix;
+
+        /// <summary>
+        /// Gets the prefix used for identifying a controller version in a <see cref="Type"/>.<see cref="Type.FullName"/>. Examples and usage in remarks.
+        /// </summary>
+        /// <remarks>
+        ///  <para>
+        ///     Make sure to set this property in the Application_Start method.
+        /// </para>
+        /// 
+        ///  <para>
+        ///     For example, when this is set to "V", a controller in the namespace of Company.V1.ProductController will identify the ProductController as being version 1, but will not identify 
+        ///     Company.Version1.ProductController as being a version 1 controller.
+        /// </para>
+        /// </remarks>
+        public static string VersionPrefix {
+            get { return _VersionPrefix; }
+            set {
+                if (value == null) {
+                    throw new ArgumentNullException("value");
+                }
+
+                if (String.IsNullOrWhiteSpace(value)) {
+                    throw new ArgumentException("Cannot set an empty value as VersionPrefix", "value");
+                }
+
+                if (IsControllerCacheInitialized) {
+                    throw new InvalidOperationException("The controller discovery process has already run and the VersionPrefix cannot be changed anymore.");
+                }
+
+                _VersionPrefix = value;
+            }
+        }
 
         private readonly HttpConfiguration _configuration;
         private readonly Lazy<ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor>> _controllerInfoCache;
@@ -31,7 +68,7 @@
         ///   Initializes a new instance of the <see cref="System.Web.Http.Dispatcher.DefaultHttpControllerSelector" /> class.
         /// </summary>
         /// <param name="configuration"> The configuration. </param>
-        public VersionedControllerSelector(HttpConfiguration configuration) {
+        protected VersionedControllerSelector(HttpConfiguration configuration) {
             if (configuration == null) {
                 throw new ArgumentNullException("configuration");
             }
@@ -133,6 +170,8 @@
         }
 
         private ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor> InitializeControllerInfoCache() {
+            IsControllerCacheInitialized = true;
+
             var result = new ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor>(ControllerIdentification.Comparer);
             var duplicateControllers = new HashSet<ControllerIdentification>();
             Dictionary<ControllerIdentification, ILookup<string, Type>> controllerTypeGroups = this._controllerTypeCache.Cache;
