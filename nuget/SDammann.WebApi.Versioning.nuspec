@@ -13,6 +13,9 @@
     <tags>aspnet webapi versioning</tags>
 	
 	<releaseNotes>
+	Version 1.2:
+	- Support for custom controller name convention.
+	
 	Version 1.1:
 	- Initial nuget package release
 	</releaseNotes>

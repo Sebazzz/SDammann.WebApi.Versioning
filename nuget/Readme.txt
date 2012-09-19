@@ -20,7 +20,16 @@ namespace. The implementations that are included are listed below.
 
 The fully qualified name of the API controllers must include one section that is equal to VersionN, where
 N is an version number. For example: TestWebsite.Api.Version1.HelloController is an controller with name
-"Hello" for version 1 of the API.
+"Hello" for version 1 of the API. This convention can be changed, see below.
+
+------------------------------------------
+Changing the API controller convention
+------------------------------------------
+
+It is possible to override the default convention used for detecting a Controller's version. 
+This convention can be changed by assigning a different value to the VersionedControllerSelector.VersionPrefix property (new since 1.2).
+
+Make sure to do this very early in your application, for example in the Application_Start method in Global.asax.
 
 ------------------------------------------
 IHttpControllerSelector implementations
