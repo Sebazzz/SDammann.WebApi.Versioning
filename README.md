@@ -25,9 +25,9 @@ Changing the API controller convention
 ------------------------------------------
 
 It is possible to override the default convention used for detecting a Controller's version. 
-This convention can be changed by assigning a different value to the VersionedControllerSelector.VersionPrefix property (new since 1.2).
+This convention can be changed by assigning a different value to the `VersionedControllerSelector.VersionPrefix` property (new since 1.2).
 
-Make sure to do this very early in your application, for example in the Application_Start method in Global.asax.
+Make sure to do this very early in your application, for example in the `Application_Start` method in Global.asax.
 
 IHttpControllerSelector implementations
 ------------------------------------------
