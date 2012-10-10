@@ -1,6 +1,7 @@
 ﻿namespace VersioningTestApp {
     using System.Web;
     using System.Web.Http;
+    using System.Web.Http.Description;
     using System.Web.Http.Dispatcher;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -17,8 +18,7 @@
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             // enable API versioning
-            GlobalConfiguration.Configuration.Services.Replace(typeof (IHttpControllerSelector),
-                                                           new RouteVersionedControllerSelector(GlobalConfiguration.Configuration));
+            GlobalConfiguration.Configuration.Services.Replace(typeof (IHttpControllerSelector), new RouteVersionedControllerSelector(GlobalConfiguration.Configuration));
         }
     }
 }
