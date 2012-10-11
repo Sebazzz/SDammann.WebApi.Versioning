@@ -257,7 +257,7 @@ namespace SDammann.WebApi.Versioning
                     paramString.Append("?");
 
                 foreach (var param in parameterValuesForRoute)
-                    paramString.AppendFormat("{0}={1}", param.Key, param.Value);
+                    paramString.AppendFormat("{2}{0}={1}", param.Key, param.Value, paramString.ToString().Length > 1 ? "&" : string.Empty);
             }
 
             expandedRouteTemplate = route.RouteTemplate.Replace("{id}", actionDescriptor.ActionName)
