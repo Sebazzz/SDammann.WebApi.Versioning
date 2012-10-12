@@ -166,17 +166,22 @@ namespace SDammann.WebApi.Versioning
 
             foreach (HttpMethod method in supportedMethods)
             {
-                apiDescriptions.Add(new VersionedApiDescription()
+                var description = new ApiDescription()
                 {
                     Documentation = apiDocumentation,
                     HttpMethod = method,
                     RelativePath = finalPath,
                     ActionDescriptor = actionDescriptor,
-                    Route = route,
-                    SupportedResponseFormatters = new Collection<MediaTypeFormatter>(supportedResponseFormatters.ToList()),
-                    SupportedRequestBodyFormatters = new Collection<MediaTypeFormatter>(supportedRequestBodyFormatters.ToList()),
-                    ParameterDescriptions = new Collection<ApiParameterDescription>(parameterDescriptions)
-                });
+                    Route = route
+                };
+                foreach(var mtf in supportedRequestBodyFormatters)
+                    description.SupportedRequestBodyFormatters.Add(mtf);
+                foreach(var mtf in supportedResponseFormatters)
+                    description.SupportedResponseFormatters.Add(mtf);
+                foreach(var par in parameterDescriptions)
+                    description.ParameterDescriptions.Add(par);
+
+                apiDescriptions.Add(description);
             }
         }
 
@@ -339,19 +344,5 @@ namespace SDammann.WebApi.Versioning
             }
             return version;
         }
-    }
-
-    internal class VersionedApiDescription : ApiDescription
-    {
-        public VersionedApiDescription()
-        {
-            SupportedRequestBodyFormatters = new Collection<MediaTypeFormatter>();
-            SupportedResponseFormatters = new Collection<MediaTypeFormatter>();
-            ParameterDescriptions = new Collection<ApiParameterDescription>();
-        }
-        
-        public new Collection<MediaTypeFormatter> SupportedResponseFormatters { get; internal set; }
-        public new Collection<MediaTypeFormatter> SupportedRequestBodyFormatters { get; internal set; }
-        public new Collection<ApiParameterDescription> ParameterDescriptions { get; internal set; }
     }
 }
