@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="AcceptHeaderVersionedControllerSelector.cs" />
     <Compile Include="RouteVersionedControllerSelector.cs" />
+    <Compile Include="VersionedApiExplorer.cs" />
     <Compile Include="VersionedControllerSelector.cs" />
     <Compile Include="ControllerIdentification.cs" />
     <Compile Include="HttpControllerTypeCache.cs" />
