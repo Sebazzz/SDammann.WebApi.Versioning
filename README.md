@@ -57,3 +57,9 @@ IHttpControllerSelector implementations
 License
 -----------------------------------------
 Apache 2.0 license. License details are available in the LICENSE file.
+
+
+Contributors
+------------------------------------------
+[Sebastiaan Dammann](https://github.com/Sebazzz)
+[davidsavagejr](https://github.com/davidsavagejr)
