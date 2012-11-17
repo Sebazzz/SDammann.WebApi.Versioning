@@ -3,7 +3,7 @@
   <metadata>
     <id>SDammann.WebApi.Versioning</id>
 	<title>ASP.NET Web API versioning support</title>
-    <version>1.3</version>
+    <version>1.3.0.1</version>
     <authors>Sebastiaan Dammann</authors>
     <owners>Sebastiaan Dammann</owners>
     <licenseUrl>https://github.com/Sebazzz/SDammann.WebApi.Versioning/raw/master/LICENSE</licenseUrl>
@@ -26,7 +26,6 @@
     <dependencies>
       <dependency id="Microsoft.AspNet.WebApi.Core" />
       <dependency id="Microsoft.Web.Infrastructure" />
-      <dependency id="Newtonsoft.Json" />
     </dependencies>
 
 	
