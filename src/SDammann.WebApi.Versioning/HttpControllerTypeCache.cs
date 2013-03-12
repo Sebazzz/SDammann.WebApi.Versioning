@@ -2,6 +2,7 @@ namespace SDammann.WebApi.Versioning {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
@@ -50,7 +51,7 @@ namespace SDammann.WebApi.Versioning {
 
             ICollection<Type> controllerTypes = controllersResolver.GetControllerTypes(assembliesResolver);
             IEnumerable<IGrouping<ControllerIdentification, Type>> groupedByName = controllerTypes.GroupBy(
-                                                                                                 this.GetControllerName,
+                                                                                                 GetControllerName,
                                                                                                  ControllerIdentification.Comparer);
 
             return groupedByName.ToDictionary(
@@ -59,7 +60,7 @@ namespace SDammann.WebApi.Versioning {
                                               ControllerIdentification.Comparer);
         }
 
-        private ControllerIdentification GetControllerName(Type type) {
+        private static ControllerIdentification GetControllerName(Type type) {
             string fullName = type.FullName;
             Debug.Assert(fullName != null);
 
@@ -79,7 +80,7 @@ namespace SDammann.WebApi.Versioning {
 
                 string versionNumberStr = namePart.Substring(VersionedControllerSelector.VersionPrefix.Length);
                 int versionNumber;
-                if (Int32.TryParse(versionNumberStr, out versionNumber)) {
+                if (Int32.TryParse(versionNumberStr, NumberStyles.None, CultureInfo.InvariantCulture, out versionNumber)) {
                     // OK :D we have a version
                     version = versionNumber;
                     break;

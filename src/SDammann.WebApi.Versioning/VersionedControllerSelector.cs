@@ -21,12 +21,31 @@
     /// </summary>
     public abstract class VersionedControllerSelector : IHttpControllerSelector {
         private static LockValue<string> _VersionPrefix = "Version";
+        private static LockValue<string> _ControllerSuffix = DefaultHttpControllerSelector.ControllerSuffix;
 
         protected const string ControllerKey = "controller";
+
         /// <summary>
         /// Gets the suffix in the Controller <see cref="Type"/>s <see cref="Type.Name"/>
         /// </summary>
-        public static readonly string ControllerSuffix = DefaultHttpControllerSelector.ControllerSuffix;
+        public static string ControllerSuffix {
+            get { return _ControllerSuffix; }
+            set {
+                if (value == null) {
+                    throw new ArgumentNullException("value");
+                }
+
+                if (String.IsNullOrWhiteSpace(value)) {
+                    throw new ArgumentException("Cannot set an empty value as ControllerSuffix", "value");
+                }
+
+                if (_ControllerSuffix.IsLocked) {
+                    throw new InvalidOperationException("The controller discovery process has already run and the ControllerSuffix cannot be changed anymore.");
+                }
+
+                _ControllerSuffix = value;
+            }
+        }
 
         /// <summary>
         /// Gets the prefix used for identifying a controller version in a <see cref="Type"/>.<see cref="Type.FullName"/>. Examples and usage in remarks.
