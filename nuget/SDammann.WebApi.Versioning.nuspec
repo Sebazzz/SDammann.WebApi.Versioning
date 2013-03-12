@@ -3,7 +3,7 @@
   <metadata>
     <id>SDammann.WebApi.Versioning</id>
 	<title>ASP.NET Web API versioning support</title>
-    <version>1.4.0.0</version>
+    <version>1.5.0.0</version>
     <authors>Sebastiaan Dammann</authors>
     <owners>Sebastiaan Dammann</owners>
     <licenseUrl>https://github.com/Sebazzz/SDammann.WebApi.Versioning/raw/master/LICENSE</licenseUrl>
@@ -13,6 +13,11 @@
     <tags>aspnet webapi versioning</tags>
 	
 	<releaseNotes>
+  Version 1.5:
+  - Add support for Accept MIME type with version (AcceptHeaderControllerSelector)
+  - AcceptHeaderVersionedControllerSelector replaced with AcceptHeaderVersionedControllerSelectorBase
+  - AcceptHeaderVersionedControllerSelector is now obsolete
+    
   Version 1.4:
   - Updated references
     
