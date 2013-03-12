@@ -46,12 +46,16 @@ IHttpControllerSelector implementations
 	Supports selecting an API controller by the "X-Api-Version" HTTP header. The integer value of the
 	HTTP header determines the API version to use. 
 
-`SDammann.WebApi.Versioning.AcceptHeaderVersionedControllerSelector`:
+`SDammann.WebApi.Versioning.AcceptHeaderVersionedControllerSelectorBase`:
 	This in an abstract class that supports versioning by the "Accept" HTTP header and enables callers
 	to use an Accept header value like 'application/vnd.company.myapp-v3+json' to select the API
 	version. Some REST-evangelists think this is the best way to implement API versioning.
 	Derived classes need to implement one method to return the API version from the media type string
 	in the Accept header: GetVersion
+	
+`SDammann.WebApi.Versioning.AcceptHeaderControllerSelector`:
+	Implementation of the `AcceptHeaderVersionedControllerSelector` class. Requires the Accept header to
+	be in the format of '<mime-type>; version=<number>'. For example: 'application/json; version=1'.
 
 	
 License
