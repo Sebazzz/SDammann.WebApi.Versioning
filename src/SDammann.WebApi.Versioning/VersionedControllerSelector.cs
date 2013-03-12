@@ -12,6 +12,7 @@
     using System.Web.Http.Controllers;
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Routing;
+    using Resources;
     using Util;
 
 
@@ -36,11 +37,11 @@
                 }
 
                 if (String.IsNullOrWhiteSpace(value)) {
-                    throw new ArgumentException("Cannot set an empty value as ControllerSuffix", "value");
+                    throw new ArgumentException(String.Format(ExceptionStrings.CannotSetEmptyValue, "ControllerSuffix"), "value");
                 }
 
                 if (_ControllerSuffix.IsLocked) {
-                    throw new InvalidOperationException("The controller discovery process has already run and the ControllerSuffix cannot be changed anymore.");
+                    throw new InvalidOperationException(String.Format(ExceptionStrings.ControllerDiscoveryProcessAlreadyRun, "ControllerSuffix"));
                 }
 
                 _ControllerSuffix = value;
@@ -68,11 +69,11 @@
                 }
 
                 if (String.IsNullOrWhiteSpace(value)) {
-                    throw new ArgumentException("Cannot set an empty value as VersionPrefix", "value");
+                    throw new ArgumentException(String.Format(ExceptionStrings.CannotSetEmptyValue, "VersionPrefix"), "value");
                 }
 
                 if (_VersionPrefix.IsLocked) {
-                    throw new InvalidOperationException("The controller discovery process has already run and the VersionPrefix cannot be changed anymore.");
+                    throw new InvalidOperationException(String.Format(ExceptionStrings.ControllerDiscoveryProcessAlreadyRun, "VersionPrefix"));
                 }
 
                 _VersionPrefix = value;
