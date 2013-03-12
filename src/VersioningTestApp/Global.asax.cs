@@ -19,6 +19,7 @@
 
             // enable API versioning
             GlobalConfiguration.Configuration.Services.Replace(typeof (IHttpControllerSelector), new RouteVersionedControllerSelector(GlobalConfiguration.Configuration));
+            //GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerSelector), new AcceptHeaderControllerSelector(GlobalConfiguration.Configuration));
         }
     }
 }
