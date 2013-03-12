@@ -12,6 +12,7 @@
     using System.Web.Http.Controllers;
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Routing;
+    using Util;
 
 
     /// <summary>
@@ -19,8 +20,7 @@
     ///   How the actual controller to be invoked is determined, is up to the derived class to implement.
     /// </summary>
     public abstract class VersionedControllerSelector : IHttpControllerSelector {
-        private static string _VersionPrefix = "Version";
-        private static bool IsControllerCacheInitialized = false;
+        private static LockValue<string> _VersionPrefix = "Version";
 
         protected const string ControllerKey = "controller";
         /// <summary>
@@ -52,7 +52,7 @@
                     throw new ArgumentException("Cannot set an empty value as VersionPrefix", "value");
                 }
 
-                if (IsControllerCacheInitialized) {
+                if (_VersionPrefix.IsLocked) {
                     throw new InvalidOperationException("The controller discovery process has already run and the VersionPrefix cannot be changed anymore.");
                 }
 
@@ -170,8 +170,11 @@
         }
 
         private ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor> InitializeControllerInfoCache() {
-            IsControllerCacheInitialized = true;
+            // lock dependend properties
+            _VersionPrefix.Lock();
 
+
+            // let's find and cache the found controllers
             var result = new ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor>(ControllerIdentification.Comparer);
             var duplicateControllers = new HashSet<ControllerIdentification>();
             Dictionary<ControllerIdentification, ILookup<string, Type>> controllerTypeGroups = this._controllerTypeCache.Cache;
