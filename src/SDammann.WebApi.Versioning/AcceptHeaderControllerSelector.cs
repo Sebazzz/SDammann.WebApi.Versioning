@@ -8,17 +8,17 @@
     /// <summary>
     /// Version controller that enables version by MIME type in the accept header
     /// </summary>
-    public sealed class AcceptHeaderControllerSelector : AcceptHeaderVersionedControllerSelectorBase {
+    public sealed class AcceptHeaderVersionedControllerSelector : AcceptHeaderVersionedControllerSelectorBase {
         /// <summary>
         /// Specifies the media type to accept. Set this in your Application_Start or before.
         /// </summary>
         public static string AcceptMediaType = "application/json";
 
         /// <summary>
-        /// Initializes the <see cref="AcceptHeaderControllerSelector"/> instance
+        /// Initializes the <see cref="AcceptHeaderVersionedControllerSelector"/> instance
         /// </summary>
         /// <param name="configuration"></param>
-        public AcceptHeaderControllerSelector(HttpConfiguration configuration) : base(configuration) {}
+        public AcceptHeaderVersionedControllerSelector(HttpConfiguration configuration) : base(configuration) { }
 
         protected override int? GetVersion(MediaTypeWithQualityHeaderValue mimeType) {
             if (!String.Equals(mimeType.MediaType, AcceptMediaType, StringComparison.InvariantCultureIgnoreCase)) {

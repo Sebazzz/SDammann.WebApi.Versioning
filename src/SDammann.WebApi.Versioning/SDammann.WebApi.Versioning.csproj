@@ -69,7 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcceptHeaderControllerSelector.cs" />
-    <Compile Include="AcceptHeaderVersionedControllerSelector.cs" />
     <Compile Include="AcceptHeaderVersionedControllerSelectorBase.cs" />
     <Compile Include="RouteVersionedControllerSelector.cs" />
     <Compile Include="Util\LockValue.cs" />
