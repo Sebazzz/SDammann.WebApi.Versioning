@@ -68,7 +68,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptHeaderControllerSelector.cs" />
     <Compile Include="AcceptHeaderVersionedControllerSelector.cs" />
+    <Compile Include="AcceptHeaderVersionedControllerSelectorBase.cs" />
     <Compile Include="RouteVersionedControllerSelector.cs" />
     <Compile Include="VersionedApiExplorer.cs" />
     <Compile Include="VersionedControllerSelector.cs" />
