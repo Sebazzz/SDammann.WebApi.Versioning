@@ -6,6 +6,7 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     using SDammann.WebApi.Versioning;
+    using WebApi.DocumentationController.DocumentationProviders;
 
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
@@ -16,8 +17,10 @@
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-
+            
             // enable API versioning
+            GlobalConfiguration.Configuration.Services.Replace(typeof(IApiExplorer), new VersionedApiExplorer(GlobalConfiguration.Configuration));
+            GlobalConfiguration.Configuration.Services.Replace(typeof(IDocumentationProvider), new XmlCommentDocumentationProvider());
             GlobalConfiguration.Configuration.Services.Replace(typeof (IHttpControllerSelector), new RouteVersionedControllerSelector(GlobalConfiguration.Configuration));
             //GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerSelector), new AcceptHeaderVersionedControllerSelector(GlobalConfiguration.Configuration));
         }
