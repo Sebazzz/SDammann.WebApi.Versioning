@@ -110,10 +110,13 @@
             }
 
             ControllerIdentification controllerName = this.GetControllerIdentificationFromRequest(request);
+            
             if (String.IsNullOrEmpty(controllerName.Name)) {
                 throw new HttpResponseException(request.CreateResponse(HttpStatusCode.NotFound));
             }
 
+            if (controllerName.Version == null) controllerName.Version = this.GetVersionRouteDefaults(request);
+            
             HttpControllerDescriptor controllerDescriptor;
             if (this._controllerInfoCache.Value.TryGetValue(controllerName, out controllerDescriptor)) {
                 return controllerDescriptor;
@@ -137,6 +140,22 @@
                                                                    CreateAmbiguousControllerExceptionMessage(request.GetRouteData().Route,
                                                                                                              controllerName.Name,
                                                                                                              matchingTypes)));
+        }
+
+        private int? GetVersionRouteDefaults(HttpRequestMessage request)
+        {
+            if (request == null) {
+                throw new ArgumentNullException("request");
+            }
+
+            object data;
+
+            if (request.GetRouteData().Values.TryGetValue("version", out data))
+            {
+                var apiVersion = (int?) data;
+                return apiVersion;
+            }
+            return null;
         }
 
         public IDictionary<string, HttpControllerDescriptor> GetControllerMapping() {
