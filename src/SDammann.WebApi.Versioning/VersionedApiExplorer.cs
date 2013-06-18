@@ -256,10 +256,7 @@ namespace SDammann.WebApi.Versioning
             }
             if (parameterDescriptions.Any())
             {
-                if (!actionDescriptor.SupportedHttpMethods.Contains(HttpMethod.Get))
-                    paramString.Append("/");
-                else
-                    paramString.Append("?");
+                paramString.Append("?");
 
                 foreach (var param in parameterValuesForRoute)
                     paramString.AppendFormat("{2}{0}={1}", param.Key, param.Value, paramString.ToString().Length > 1 ? "&" : string.Empty);
