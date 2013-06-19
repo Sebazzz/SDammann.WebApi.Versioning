@@ -22,5 +22,10 @@
 
             return new Message("Hello World from API version 2! Language code = " + languageCode, "Hello World");
         }
+
+        public string Post(string message, string otherthing)
+        {
+            return message;
+        }
     }
 }

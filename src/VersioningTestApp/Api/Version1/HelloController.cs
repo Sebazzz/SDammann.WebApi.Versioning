@@ -24,5 +24,10 @@
         {
             // this should show up as a delete.
         }
+
+        public string Post(string message)
+        {
+            return message;
+        }
     }
 }
