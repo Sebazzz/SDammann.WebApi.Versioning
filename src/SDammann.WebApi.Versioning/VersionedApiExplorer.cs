@@ -174,11 +174,11 @@ namespace SDammann.WebApi.Versioning
                     ActionDescriptor = actionDescriptor,
                     Route = route
                 };
-                foreach(var mtf in supportedRequestBodyFormatters)
+                foreach (var mtf in supportedRequestBodyFormatters)
                     description.SupportedRequestBodyFormatters.Add(mtf);
-                foreach(var mtf in supportedResponseFormatters)
+                foreach (var mtf in supportedResponseFormatters)
                     description.SupportedResponseFormatters.Add(mtf);
-                foreach(var par in parameterDescriptions)
+                foreach (var par in parameterDescriptions)
                     description.ParameterDescriptions.Add(par);
 
                 apiDescriptions.Add(description);
@@ -262,11 +262,59 @@ namespace SDammann.WebApi.Versioning
                     paramString.AppendFormat("{2}{0}={1}", param.Key, param.Value, paramString.ToString().Length > 1 ? "&" : string.Empty);
             }
 
+            bool expandResult = false;
+            if (RouteTemplateContainsVersion(routeTemplate))
+            {
+                expandResult = TryExpandVersionUriParameters(route, actionDescriptor, paramString.ToString(), out expandedRouteTemplate);
+            }
+            else
+            {
+                expandResult = TryExpandGeneralUriParameters(route, actionDescriptor, paramString.ToString(), out expandedRouteTemplate);
+            }
+
+            return expandResult;
+        }
+
+        private static bool RouteTemplateContainsVersion(string routeTemplate)
+        {
+            if (string.IsNullOrWhiteSpace(routeTemplate))
+            {
+                return false;
+            }
+
+            return routeTemplate.Contains("{version}");
+        }
+
+        private static bool TryExpandVersionUriParameters(IHttpRoute route, HttpActionDescriptor actionDescriptor, string paramString, out string expandedRouteTemplate)
+        {
+            string version = actionDescriptor.ControllerDescriptor.Version();
+            if (string.IsNullOrEmpty(version))
+            {
+                expandedRouteTemplate = string.Empty;
+                return false;
+            }
+
             expandedRouteTemplate = route.RouteTemplate.Replace("/{id}", string.Empty)
                 .Replace("{action}", actionDescriptor.ActionName)
                 .Replace("{version}", actionDescriptor.ControllerDescriptor.Version())
                 .Replace("{controller}", actionDescriptor.ControllerDescriptor.ControllerName)
                 + paramString.ToString();
+            return true;
+        }
+
+        private static bool TryExpandGeneralUriParameters(IHttpRoute route, HttpActionDescriptor actionDescriptor, string paramString, out string expandedRouteTemplate)
+        {
+            string version = actionDescriptor.ControllerDescriptor.Version();
+            if (!string.IsNullOrEmpty(version))
+            {
+                expandedRouteTemplate = string.Empty;
+                return false;
+            }
+
+            expandedRouteTemplate = route.RouteTemplate.Replace("/{id}", string.Empty)
+               .Replace("{action}", actionDescriptor.ActionName)
+               .Replace("{controller}", actionDescriptor.ControllerDescriptor.ControllerName)
+               + paramString.ToString();
             return true;
         }
 
@@ -329,7 +377,7 @@ namespace SDammann.WebApi.Versioning
 
         public static string Version(this HttpControllerDescriptor controllerDescriptor)
         {
-            string version = "???";
+            string version = string.Empty;
             if (controllerDescriptor != null)
             {
                 var parts = controllerDescriptor.ControllerType.Namespace.Split('.');
