@@ -70,7 +70,7 @@ namespace SDammann.WebApi.Versioning {
             string[] nameSplit = fullName.Split('.');
 
             string name = nameSplit[nameSplit.Length - 1]; // same as Type.Name
-            int? version = null;
+            string version = null;
 
             for (int i = nameSplit.Length - 2; i >= 0; i--) {
                 string namePart = nameSplit[i];
@@ -78,11 +78,8 @@ namespace SDammann.WebApi.Versioning {
                     continue;
                 }
 
-                string versionNumberStr = namePart.Substring(VersionedControllerSelector.VersionPrefix.Length);
-                int versionNumber;
-                if (Int32.TryParse(versionNumberStr, NumberStyles.None, CultureInfo.InvariantCulture, out versionNumber)) {
-                    // OK :D we have a version
-                    version = versionNumber;
+                if (VersionedControllerSelector.IsVersionNumber(namePart)) {
+                    version = VersionedControllerSelector.ToVersionNumber(namePart);
                     break;
                 }
             }

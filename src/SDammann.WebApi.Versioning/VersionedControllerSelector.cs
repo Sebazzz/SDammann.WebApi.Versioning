@@ -8,6 +8,7 @@
     using System.Net;
     using System.Net.Http;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Web.Http;
     using System.Web.Http.Controllers;
     using System.Web.Http.Dispatcher;
@@ -142,7 +143,7 @@
                                                                                                              matchingTypes)));
         }
 
-        private int? GetVersionRouteDefaults(HttpRequestMessage request)
+        private string GetVersionRouteDefaults(HttpRequestMessage request)
         {
             if (request == null) {
                 throw new ArgumentNullException("request");
@@ -152,8 +153,7 @@
 
             if (request.GetRouteData().Values.TryGetValue("version", out data))
             {
-                var apiVersion = (int?) data;
-                return apiVersion;
+                return data as string;
             }
             return null;
         }
@@ -240,6 +240,25 @@
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Determines whether part of a namespace string is a valid version number
+        /// </summary>
+        /// <param name="namespacePart">Part of a namespace string to check</param>
+        /// <returns>True if the namespace part is a valid version number, false otherwise</returns>
+        internal static bool IsVersionNumber(string namespacePart) {
+            return Regex.IsMatch(namespacePart, String.Format(@"{0}[0-9]+(_[0-9]+)*", VersionPrefix));
+        }
+
+        /// <summary>
+        /// Converts part of a namespace string to a valid version number
+        /// </summary>
+        /// <param name="namespacePart">Part of a namespace string to convert</param>
+        /// <returns>A string containing a valid version number. e.g. for the namespace part Version2_1 the string 2.1 would be returned</returns>
+        internal static string ToVersionNumber(string namespacePart) {
+            // we have a version, strip the prefix and convert version separators to ensure a valid namespace
+            return namespacePart.Substring(VersionPrefix.Length).Replace("_", ".");
         }
     }
 }

@@ -15,6 +15,7 @@ using System.Web.Http.ModelBinding;
 using System.Web.Http.Routing;
 using System.Web.Http.ValueProviders;
 using System.Web.Http.ValueProviders.Providers;
+using SDammann.WebApi.Versioning.Util;
 
 namespace SDammann.WebApi.Versioning
 {
@@ -330,14 +331,12 @@ namespace SDammann.WebApi.Versioning
         public static string Version(this HttpControllerDescriptor controllerDescriptor)
         {
             string version = "???";
-            if (controllerDescriptor != null)
+            if (controllerDescriptor != null) 
             {
                 var parts = controllerDescriptor.ControllerType.Namespace.Split('.');
-                foreach (var part in parts.Where(p => p.ToLower().StartsWith("version")))
+                foreach (var part in parts.Where(VersionedControllerSelector.IsVersionNumber)) 
                 {
-                    int v;
-                    if (int.TryParse(part.ToLower().Replace("version", ""), out v))
-                        version = v.ToString();
+                    return VersionedControllerSelector.ToVersionNumber(part);
                 }
             }
             return version;

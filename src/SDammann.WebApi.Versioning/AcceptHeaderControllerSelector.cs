@@ -20,7 +20,7 @@
         /// <param name="configuration"></param>
         public AcceptHeaderVersionedControllerSelector(HttpConfiguration configuration) : base(configuration) { }
 
-        protected override int? GetVersion(MediaTypeWithQualityHeaderValue mimeType) {
+        protected override string GetVersion(MediaTypeWithQualityHeaderValue mimeType) {
             if (!String.Equals(mimeType.MediaType, AcceptMediaType, StringComparison.InvariantCultureIgnoreCase)) {
                 return null;
             }
@@ -29,17 +29,11 @@
             NameValueHeaderValue versionParameter =
                 mimeType.Parameters.FirstOrDefault(parameter => parameter.Name == "version");
 
-            if (versionParameter == null) {
+            if (versionParameter == null || String.IsNullOrWhiteSpace(versionParameter.Value)) {
                 return null;
             }
 
-            // parse version
-            int version;
-            if (!Int32.TryParse(versionParameter.Value, NumberStyles.None, CultureInfo.InvariantCulture, out version)) {
-                return null;
-            }
-
-            return version;
+            return versionParameter.Value;
         }
     }
 }
