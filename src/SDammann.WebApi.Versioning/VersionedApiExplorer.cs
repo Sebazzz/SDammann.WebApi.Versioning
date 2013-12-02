@@ -255,7 +255,7 @@ namespace SDammann.WebApi.Versioning
                     parameterValuesForRoute.Add(paramDescriptor.Name, "{" + paramDescriptor.Name + "}");
                 }
             }
-            if (parameterDescriptions.Any())
+            if (parameterValuesForRoute.Count > 0)
             {
                 paramString.Append("?");
 
