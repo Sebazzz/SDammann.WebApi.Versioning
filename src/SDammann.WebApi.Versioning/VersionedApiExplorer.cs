@@ -264,7 +264,7 @@ namespace SDammann.WebApi.Versioning
             }
 
             expandedRouteTemplate = route.RouteTemplate.Replace("/{id}", string.Empty)
-                .Replace("{action}", actionDescriptor.ActionName)
+                .Replace("/{action}", actionDescriptor.ActionName.Equals(route.Defaults["action"]) ? "" : string.Format("/{0}", actionDescriptor.ActionName))
                 .Replace("{version}", actionDescriptor.ControllerDescriptor.Version())
                 .Replace("{controller}", actionDescriptor.ControllerDescriptor.ControllerName)
                 + paramString.ToString();
