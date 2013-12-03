@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Http;
@@ -245,16 +246,10 @@ namespace SDammann.WebApi.Versioning
 
         private static bool TryExpandUriParameters(IHttpRoute route, string routeTemplate, HttpActionDescriptor actionDescriptor, ICollection<ApiParameterDescription> parameterDescriptions, out string expandedRouteTemplate)
         {
-            Dictionary<string, object> parameterValuesForRoute = new Dictionary<string, object>();
-            StringBuilder paramString = new StringBuilder();
-            foreach (var paramDescriptor in parameterDescriptions)
-            {
-                Type parameterType = paramDescriptor.ParameterDescriptor.ParameterType;
-                if (paramDescriptor.Source == ApiParameterSource.FromUri)
-                {
-                    parameterValuesForRoute.Add(paramDescriptor.Name, "{" + paramDescriptor.Name + "}");
-                }
-            }
+            var parameterValuesForRoute = GetParameterValuesForRoute(parameterDescriptions);
+
+	        var paramString = new StringBuilder();
+
             if (parameterValuesForRoute.Count > 0)
             {
                 paramString.Append("?");
@@ -271,7 +266,48 @@ namespace SDammann.WebApi.Versioning
             return true;
         }
 
-        private string GetApiDocumentation(HttpActionDescriptor actionDescriptor)
+	    private static Dictionary<string, object> GetParameterValuesForRoute(IEnumerable<ApiParameterDescription> parameterDescriptions)
+	    {
+		    var parameterValuesForRoute = new Dictionary<string, object>();
+
+		    foreach (var paramDescriptor in parameterDescriptions.Where(pd => pd.Source == ApiParameterSource.FromUri))
+		    {
+			    Type parameterType = paramDescriptor.ParameterDescriptor.ParameterType;
+			    if (parameterType.IsPrimitive || parameterType == typeof(string) || parameterType == typeof(Nullable<>))
+			    {
+				    parameterValuesForRoute.Add(paramDescriptor.Name, "{" + paramDescriptor.Name + "}");
+			    }
+			    else
+			    {
+				    GetModelParameterValues(parameterType, parameterValuesForRoute);
+			    }
+		    }
+		    return parameterValuesForRoute;
+	    }
+
+	    private static void GetModelParameterValues(Type parameterType, Dictionary<string, object> parameterValuesForRoute)
+	    {
+		    foreach (var property in parameterType.GetProperties())
+		    {
+			    var ignoreAttribute = property.GetCustomAttributes(typeof(IgnoreDataMemberAttribute), false).FirstOrDefault();
+			    if (ignoreAttribute != null)
+			    {
+				    continue;
+			    }
+
+			    var paramName = property.Name;
+
+			    var nameAttribute = property.GetCustomAttributes(typeof(DataMemberAttribute), true).OfType<DataMemberAttribute>().LastOrDefault();
+			    if (nameAttribute != null)
+			    {
+				    paramName = nameAttribute.Name ?? paramName;
+			    }
+
+			    parameterValuesForRoute.Add(paramName, string.Format("{{{0}}}", paramName));
+		    }
+	    }
+
+	    private string GetApiDocumentation(HttpActionDescriptor actionDescriptor)
         {
             IDocumentationProvider documentationProvider = DefaultExplorer.DocumentationProvider ?? actionDescriptor.Configuration.Services.GetDocumentationProvider();
             if (documentationProvider == null)
