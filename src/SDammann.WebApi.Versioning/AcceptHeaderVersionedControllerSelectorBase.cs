@@ -28,7 +28,7 @@ namespace SDammann.WebApi.Versioning {
 
             // get "accept" HTTP header value
             var acceptHeader = request.Headers.Accept;
-            int? apiVersion = this.GetVersionFromHeader(acceptHeader);
+            string apiVersion = this.GetVersionFromHeader(acceptHeader);
 
             string controllerName = this.GetControllerNameFromRequest(request);
 
@@ -40,9 +40,9 @@ namespace SDammann.WebApi.Versioning {
         /// </summary>
         /// <param name="acceptHeader"></param>
         /// <returns></returns>
-        private int? GetVersionFromHeader (IEnumerable<MediaTypeWithQualityHeaderValue> acceptHeader) {
+        private string GetVersionFromHeader (IEnumerable<MediaTypeWithQualityHeaderValue> acceptHeader) {
             foreach (MediaTypeWithQualityHeaderValue headerValue in acceptHeader) {
-                int? version = this.GetVersion(headerValue);
+                string version = this.GetVersion(headerValue);
                 
                 if (version != null) {
                     return version;
@@ -57,6 +57,6 @@ namespace SDammann.WebApi.Versioning {
         /// </summary>
         /// <param name="mimeType"></param>
         /// <returns></returns>
-        protected abstract int? GetVersion(MediaTypeWithQualityHeaderValue mimeType);
+        protected abstract string GetVersion(MediaTypeWithQualityHeaderValue mimeType);
     }
 }

@@ -29,12 +29,11 @@
 
             // get the version number from the HTTP header
             IEnumerable<string> values;
-            int? apiVersion = null;
+            string apiVersion = null;
             if (request.Headers.TryGetValues(ApiVersionHeaderName, out values)) {
                 foreach (string value in values) {
-                    int version;
-                    if (Int32.TryParse(value, out version)) {
-                        apiVersion = version;
+                    if (!String.IsNullOrWhiteSpace(value)) {
+                        apiVersion = value;
                         break;
                     }
                 }

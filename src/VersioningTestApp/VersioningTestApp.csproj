@@ -118,6 +118,7 @@
   <ItemGroup>
     <Compile Include="Api\Message.cs" />
     <Compile Include="Api\Version1\HelloController.cs" />
+    <Compile Include="Api\Version2_1\HelloController.cs" />
     <Compile Include="Api\Version2\HelloController.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

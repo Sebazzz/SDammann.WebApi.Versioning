@@ -28,14 +28,14 @@ namespace SDammann.WebApi.Versioning {
         /// <summary>
         /// Gets or sets the associated version
         /// </summary>
-        public int? Version { get; set; }
+        public string Version { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ControllerIdentification"/> struct.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="version">The version.</param>
-        public ControllerIdentification(string name, int? version)
+        public ControllerIdentification(string name, string version)
                 : this() {
             this.Name = name;
             this.Version = version;
@@ -64,7 +64,7 @@ namespace SDammann.WebApi.Versioning {
                 return this.Name;
             }
 
-            return VersionedControllerSelector.VersionPrefix + this.Version.Value.ToString(CultureInfo.InvariantCulture) + "." + this.Name;
+            return string.Format("{0}{1}.{2}", VersionedControllerSelector.VersionPrefix, this.Version.Replace(".", "_"), this.Name);
         }
 
         private class ControllerNameComparer : IEqualityComparer<ControllerIdentification> {

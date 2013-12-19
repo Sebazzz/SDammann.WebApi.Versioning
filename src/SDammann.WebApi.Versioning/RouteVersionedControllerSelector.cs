@@ -35,11 +35,11 @@
 
             // Also try the version if possible
             object apiVersionObj;
-            int? apiVersion = null;
+            string apiVersion = null;
             int version;
             if (routeData.Values.TryGetValue(VersionKey, out apiVersionObj) &&
-                Int32.TryParse(apiVersionObj.ToString(), out version)) {
-                apiVersion = version;
+                !String.IsNullOrWhiteSpace(apiVersionObj as string)) {
+                apiVersion = apiVersionObj as string;
             }
 
             return new ControllerIdentification(controllerName, apiVersion);
