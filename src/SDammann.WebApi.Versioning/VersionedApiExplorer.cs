@@ -176,16 +176,44 @@ namespace SDammann.WebApi.Versioning
                     ActionDescriptor = actionDescriptor,
                     Route = route
                 };
-                foreach(var mtf in supportedRequestBodyFormatters)
+
+                description.SetResponseDescription(CreateResponseDescription(actionDescriptor));
+
+                foreach (var mtf in supportedRequestBodyFormatters)
                     description.SupportedRequestBodyFormatters.Add(mtf);
-                foreach(var mtf in supportedResponseFormatters)
+                foreach (var mtf in supportedResponseFormatters)
                     description.SupportedResponseFormatters.Add(mtf);
-                foreach(var par in parameterDescriptions)
+                foreach (var par in parameterDescriptions)
                     description.ParameterDescriptions.Add(par);
 
                 apiDescriptions.Add(description);
             }
         }
+
+        private ResponseDescription CreateResponseDescription(HttpActionDescriptor actionDescriptor)
+        {
+            Type type = (
+                from attribute in actionDescriptor.GetCustomAttributes<ResponseTypeAttribute>()
+                select attribute.ResponseType).FirstOrDefault<Type>();
+            ResponseDescription responseDescription = new ResponseDescription()
+            {
+                DeclaredType = actionDescriptor.ReturnType,
+                ResponseType = type,
+                Documentation = this.GetApiResponseDocumentation(actionDescriptor)
+            };
+            return responseDescription;
+        }
+
+        private string GetApiResponseDocumentation(HttpActionDescriptor actionDescriptor)
+        {
+            var documentationProvider = DefaultExplorer.DocumentationProvider ?? actionDescriptor.Configuration.Services.GetDocumentationProvider();
+            if (documentationProvider == null)
+            {
+                return null;
+            }
+            return documentationProvider.GetResponseDocumentation(actionDescriptor);
+        }
+
 
         private IList<ApiParameterDescription> CreateParameterDescriptions(HttpActionDescriptor actionDescriptor)
         {
@@ -248,7 +276,7 @@ namespace SDammann.WebApi.Versioning
         {
             var parameterValuesForRoute = GetParameterValuesForRoute(parameterDescriptions);
 
-	        var paramString = new StringBuilder();
+            var paramString = new StringBuilder();
 
             if (parameterValuesForRoute.Count > 0)
             {
@@ -266,48 +294,48 @@ namespace SDammann.WebApi.Versioning
             return true;
         }
 
-	    private static Dictionary<string, object> GetParameterValuesForRoute(IEnumerable<ApiParameterDescription> parameterDescriptions)
-	    {
-		    var parameterValuesForRoute = new Dictionary<string, object>();
+        private static Dictionary<string, object> GetParameterValuesForRoute(IEnumerable<ApiParameterDescription> parameterDescriptions)
+        {
+            var parameterValuesForRoute = new Dictionary<string, object>();
 
-		    foreach (var paramDescriptor in parameterDescriptions.Where(pd => pd.Source == ApiParameterSource.FromUri))
-		    {
-			    Type parameterType = paramDescriptor.ParameterDescriptor.ParameterType;
-			    if (parameterType.IsPrimitive || parameterType == typeof(string) || parameterType == typeof(Nullable<>))
-			    {
-				    parameterValuesForRoute.Add(paramDescriptor.Name, "{" + paramDescriptor.Name + "}");
-			    }
-			    else
-			    {
-				    GetModelParameterValues(parameterType, parameterValuesForRoute);
-			    }
-		    }
-		    return parameterValuesForRoute;
-	    }
+            foreach (var paramDescriptor in parameterDescriptions.Where(pd => pd.Source == ApiParameterSource.FromUri))
+            {
+                Type parameterType = paramDescriptor.ParameterDescriptor.ParameterType;
+                if (parameterType.IsPrimitive || parameterType == typeof(string) || parameterType == typeof(Nullable<>))
+                {
+                    parameterValuesForRoute.Add(paramDescriptor.Name, "{" + paramDescriptor.Name + "}");
+                }
+                else
+                {
+                    GetModelParameterValues(parameterType, parameterValuesForRoute);
+                }
+            }
+            return parameterValuesForRoute;
+        }
 
-	    private static void GetModelParameterValues(Type parameterType, Dictionary<string, object> parameterValuesForRoute)
-	    {
-		    foreach (var property in parameterType.GetProperties())
-		    {
-			    var ignoreAttribute = property.GetCustomAttributes(typeof(IgnoreDataMemberAttribute), false).FirstOrDefault();
-			    if (ignoreAttribute != null)
-			    {
-				    continue;
-			    }
+        private static void GetModelParameterValues(Type parameterType, Dictionary<string, object> parameterValuesForRoute)
+        {
+            foreach (var property in parameterType.GetProperties())
+            {
+                var ignoreAttribute = property.GetCustomAttributes(typeof(IgnoreDataMemberAttribute), false).FirstOrDefault();
+                if (ignoreAttribute != null)
+                {
+                    continue;
+                }
 
-			    var paramName = property.Name;
+                var paramName = property.Name;
 
-			    var nameAttribute = property.GetCustomAttributes(typeof(DataMemberAttribute), true).OfType<DataMemberAttribute>().LastOrDefault();
-			    if (nameAttribute != null)
-			    {
-				    paramName = nameAttribute.Name ?? paramName;
-			    }
+                var nameAttribute = property.GetCustomAttributes(typeof(DataMemberAttribute), true).OfType<DataMemberAttribute>().LastOrDefault();
+                if (nameAttribute != null)
+                {
+                    paramName = nameAttribute.Name ?? paramName;
+                }
 
-			    parameterValuesForRoute.Add(paramName, string.Format("{{{0}}}", paramName));
-		    }
-	    }
+                parameterValuesForRoute.Add(paramName, string.Format("{{{0}}}", paramName));
+            }
+        }
 
-	    private string GetApiDocumentation(HttpActionDescriptor actionDescriptor)
+        private string GetApiDocumentation(HttpActionDescriptor actionDescriptor)
         {
             IDocumentationProvider documentationProvider = DefaultExplorer.DocumentationProvider ?? actionDescriptor.Configuration.Services.GetDocumentationProvider();
             if (documentationProvider == null)
@@ -342,6 +370,11 @@ namespace SDammann.WebApi.Versioning
             HttpActionBinding actionBinding = actionValueBinder != null ? actionValueBinder.GetBinding(actionDescriptor) : null;
             return actionBinding;
         }
+
+        Collection<ApiDescription> IApiExplorer.ApiDescriptions
+        {
+            get { return new Collection<ApiDescription>(this.ApiDescriptions.Select(a => a as ApiDescription).ToList()); }
+        }
     }
 
     internal static class HttpParameterBindingExtensions
@@ -367,10 +400,10 @@ namespace SDammann.WebApi.Versioning
         public static string Version(this HttpControllerDescriptor controllerDescriptor)
         {
             string version = "???";
-            if (controllerDescriptor != null) 
+            if (controllerDescriptor != null)
             {
                 var parts = controllerDescriptor.ControllerType.Namespace.Split('.');
-                foreach (var part in parts.Where(VersionedControllerSelector.IsVersionNumber)) 
+                foreach (var part in parts.Where(VersionedControllerSelector.IsVersionNumber))
                 {
                     return VersionedControllerSelector.ToVersionNumber(part);
                 }
