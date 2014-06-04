@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDammann.WebApi.Versioning", "SDammann.WebApi.Versioning\SDammann.WebApi.Versioning.csproj", "{406E64F7-F097-44B0-8730-E79567F1ED4E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersioningTestApp", "VersioningTestApp\VersioningTestApp.csproj", "{1F08148F-6D59-4B28-8DFB-F86D6E2B496C}"
@@ -11,7 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{EE4305
 		.nuget\nuget.exe = .nuget\nuget.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 		.nuget\Readme.txt = .nuget\Readme.txt
-		..\nuget\SDammann.WebApi.Versioning.nuspec = ..\nuget\SDammann.WebApi.Versioning.nuspec
 	EndProjectSection
 EndProject
 Global
