@@ -15,6 +15,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{EE4305
 		.nuget\Readme.txt = .nuget\Readme.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget-pkg", "nuget-pkg", "{B3979E84-70F0-4875-82F3-493B1E56D9BC}"
+	ProjectSection(SolutionItems) = preProject
+		..\nuget\nuget.exe = ..\nuget\nuget.exe
+		..\nuget\Publish.cmd = ..\nuget\Publish.cmd
+		..\nuget\Readme.txt = ..\nuget\Readme.txt
+		..\nuget\SDammann.WebApi.Versioning.nuspec = ..\nuget\SDammann.WebApi.Versioning.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
