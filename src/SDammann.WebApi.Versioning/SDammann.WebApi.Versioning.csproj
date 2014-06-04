@@ -85,6 +85,7 @@
     <Compile Include="VersionHeaderVersionedControllerSelector.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Signkey.snk" />
   </ItemGroup>
