@@ -3,7 +3,7 @@
   <metadata>
     <id>SDammann.WebApi.Versioning</id>
 	<title>ASP.NET Web API versioning support</title>
-    <version>2.0.0.3</version>
+    <version>2.5.0.0</version>
     <authors>Sebastiaan Dammann</authors>
     <owners>Sebastiaan Dammann</owners>
     <licenseUrl>https://github.com/Sebazzz/SDammann.WebApi.Versioning/raw/master/LICENSE</licenseUrl>
@@ -12,7 +12,10 @@
     <description>Library for API versioning support in Microsoft ASP.NET Web API</description>
     <tags>aspnet webapi versioning</tags>
 	
-	<releaseNotes>
+	<releaseNotes xml:space="preserve">
+  Version 2.5.0.0:
+  - Updated references and relaxed required packages
+    
 	Version 2.0.0.3:
 	- Fix for VersionedApiExplorer non-GET API methods
 	
@@ -46,18 +49,16 @@
   </releaseNotes>
 
     <dependencies>
-      <dependency id="Microsoft.AspNet.WebApi" />
-      <dependency id="Microsoft.Web.Infrastructure" />
-      <dependency id="Microsoft.Net.Http" />
+      <dependency id="Microsoft.AspNet.WebApi.Core" version="[5.0,)" />
     </dependencies>
 
 	
   </metadata>
 
   <files>
-		<file src="..\src\SDammann.WebApi.Versioning\bin\net40\Release\SDammann.WebApi.Versioning.dll" target="lib\net40" />
-		<file src="..\src\SDammann.WebApi.Versioning\bin\net40\Release\SDammann.WebApi.Versioning.pdb" target="lib\net40" />
-		<file src="..\src\SDammann.WebApi.Versioning\bin\net40\Release\SDammann.WebApi.Versioning.xml" target="lib\net40" />
+		<file src="..\src\SDammann.WebApi.Versioning\bin\net45\Release\SDammann.WebApi.Versioning.dll" target="lib\net45" />
+		<file src="..\src\SDammann.WebApi.Versioning\bin\net45\Release\SDammann.WebApi.Versioning.pdb" target="lib\net45" />
+		<file src="..\src\SDammann.WebApi.Versioning\bin\net45\Release\SDammann.WebApi.Versioning.xml" target="lib\net45" />
 
 		<file src="..\nuget\Readme.txt" />
 		<file src="..\LICENSE" />
