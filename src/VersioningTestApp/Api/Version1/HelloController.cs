@@ -30,4 +30,21 @@
             return message;
         }
     }
+
+    [RoutePrefix("api/v{version}/AttributeHello")]
+    public sealed class AttributeHelloController : ApiController
+    {
+
+        public Message Get()
+        {
+            return new Message("Hello World from API version 1 routed via attributes!", "Hello Attribute World");
+        }
+        
+        [Route("{title}/{message}")]
+        public Message Get(string message, string title)
+        {
+            return new Message(string.Format("Echo message: {0}", message), string.Format("Hello Attribute World - {0}", title));
+        }
+
+    }
 }
