@@ -34,7 +34,7 @@
 
             // Look up controller in route data
             string controllerName;
-            var subRoute = routeData.GetSubRoutes().FirstOrDefault();
+            var subRoute = (routeData.GetSubRoutes() ?? Enumerable.Empty<IHttpRouteData>()).FirstOrDefault();
             if (subRoute == null)
                 controllerName = this.GetControllerNameFromRequest(request);
             else
