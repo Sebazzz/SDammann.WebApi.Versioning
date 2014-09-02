@@ -5,6 +5,8 @@
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Routing;
+    using System.Linq;
+    using System.Web.Http.Controllers;
 
 
     /// <summary>
@@ -31,18 +33,39 @@
             }
 
             // Look up controller in route data
-            string controllerName = this.GetControllerNameFromRequest(request);
+            string controllerName;
+            var subRoute = routeData.GetSubRoutes().FirstOrDefault();
+            if (subRoute == null)
+                controllerName = this.GetControllerNameFromRequest(request);
+            else
+                controllerName = getControllerNameFromSubRouteData(subRoute);
 
             // Also try the version if possible
             object apiVersionObj;
             string apiVersion = null;
             int version;
-            if (routeData.Values.TryGetValue(VersionKey, out apiVersionObj) &&
-                !String.IsNullOrWhiteSpace(apiVersionObj as string)) {
+
+            if (subRoute != null && subRoute.Values.TryGetValue(VersionKey, out apiVersionObj)
+                && !String.IsNullOrWhiteSpace(apiVersionObj as string))
+            {
+                apiVersion = apiVersionObj as string;
+            }
+            else if (routeData.Values.TryGetValue(VersionKey, out apiVersionObj) &&
+                     !String.IsNullOrWhiteSpace(apiVersionObj as string))
+            {
                 apiVersion = apiVersionObj as string;
             }
 
             return new ControllerIdentification(controllerName, apiVersion);
+        }
+
+        private string getControllerNameFromSubRouteData(IHttpRouteData pRouteData)
+        {
+            var descriptors = pRouteData.Route.DataTokens["actions"] as HttpActionDescriptor[];
+            if (descriptors == null || descriptors.Length == 0)
+                return string.Empty;
+
+            return descriptors[0].ControllerDescriptor.ControllerName;
         }
     }
 }

@@ -1,0 +1,512 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApi.DocumentationController</name>
+    </assembly>
+    <members>
+        <member name="T:WebApi.DocumentationController.App_Start.BundleConfig">
+            <summary>
+            Configures the documentation resource bundle.
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.App_Start.BundleConfig.Start">
+            <summary>
+            Executes after the application starts.
+            </summary>
+        </member>
+        <member name="T:WebApi.DocumentationController.DocumentationProviders.YumlModelDiagramProvider">
+            <summary>
+            A Yuml-based model diagram provider
+            </summary>
+        </member>
+        <member name="T:WebApi.DocumentationController.Interfaces.IModelDiagramProvider">
+            <summary>
+            The model diagram provider interface
+            </summary>
+        </member>
+        <member name="P:WebApi.DocumentationController.Interfaces.IModelDiagramProvider.Models">
+            <summary>
+            Gets the models.
+            </summary>
+            <value>The models.</value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Interfaces.IModelDiagramProvider.Image">
+            <summary>
+            Gets the path to the model diagram image
+            </summary>
+            <value>The model diagram image.</value>
+        </member>
+        <member name="F:WebApi.DocumentationController.DocumentationProviders.YumlModelDiagramProvider.yumlFactory">
+            <summary>
+            The yuml generator
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.DocumentationProviders.YumlModelDiagramProvider.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.DocumentationProviders.YumlModelDiagramProvider"/> class.
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.DocumentationProviders.YumlModelDiagramProvider.#ctor(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.DocumentationProviders.YumlModelDiagramProvider"/> class.
+            </summary>
+            <param name="models">The models.</param>
+        </member>
+        <member name="M:WebApi.DocumentationController.DocumentationProviders.YumlModelDiagramProvider.GetYumlFactory(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Gets the yUML factory.
+            </summary>
+            <param name="models">The models.</param>
+            <returns>The registered type for IYumlFactory, otherwise returns the default implementation.</returns>
+        </member>
+        <member name="P:WebApi.DocumentationController.DocumentationProviders.YumlModelDiagramProvider.Models">
+            <summary>
+            Gets the models.
+            </summary>
+            <value>The models.</value>
+        </member>
+        <member name="P:WebApi.DocumentationController.DocumentationProviders.YumlModelDiagramProvider.Image">
+            <summary>
+            Gets the path to the model diagram image
+            </summary>
+            <value>The model diagram image.</value>
+        </member>
+        <member name="T:WebApi.DocumentationController.Functions.ObjectGenerator">
+            <summary>
+            This class will create an object of a given type and populate it with sample data.
+            NOTE: Copied from the ASP.NET Web Stack 17. November 2012
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.Functions.ObjectGenerator.GenerateObject(System.Type)">
+            <summary>
+            Generates an object for a given type. The type needs to be public, have a public default constructor and settable public properties/fields. Currently it supports the following types:
+            Simple types: <see cref="T:System.Int32"/>, <see cref="T:System.String"/>, <see cref="T:System.Enum"/>, <see cref="T:System.DateTime"/>, <see cref="T:System.Uri"/>, etc.
+            Complex types: POCO types.
+            Nullables: <see cref="T:System.Nullable`1"/>.
+            Arrays: arrays of simple types or complex types.
+            Key value pairs: <see cref="T:System.Collections.Generic.KeyValuePair`2"/>
+            Tuples: <see cref="T:System.Tuple`1"/>, <see cref="T:System.Tuple`2"/>, etc
+            Dictionaries: <see cref="T:System.Collections.Generic.IDictionary`2"/> or anything deriving from <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+            Collections: <see cref="T:System.Collections.Generic.IList`1"/>, <see cref="T:System.Collections.Generic.IEnumerable`1"/>, <see cref="T:System.Collections.Generic.ICollection`1"/>, <see cref="T:System.Collections.IList"/>, <see cref="T:System.Collections.IEnumerable"/>, <see cref="T:System.Collections.ICollection"/> or anything deriving from <see cref="T:System.Collections.Generic.ICollection`1"/> or <see cref="T:System.Collections.IList"/>.
+            Queryables: <see cref="T:System.Linq.IQueryable"/>, <see cref="T:System.Linq.IQueryable`1"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>An object of the given type.</returns>
+        </member>
+        <member name="T:WebApi.DocumentationController.Functions.SampleGeneratorService">
+            <summary>
+            Ther sample generator service
+            </summary>
+        </member>
+        <member name="F:WebApi.DocumentationController.Functions.SampleGeneratorService.Singleton">
+            <summary>
+            The singleton
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.Functions.SampleGeneratorService.#ctor">
+            <summary>
+            Prevents a default instance of the <see cref="T:WebApi.DocumentationController.Functions.SampleGeneratorService"/> class from being created.
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.Functions.SampleGeneratorService.GetSampleObject(System.Type)">
+            <summary>
+            Gets the sample object that will be serialized by the formatters. 
+            First, it will look at the <see cref="P:WebApi.DocumentationController.Functions.SampleGeneratorService.SampleObjects"/>. If no sample object is found, it will try to create one using <see cref="T:WebApi.DocumentationController.Functions.ObjectGenerator"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The sample object.</returns>
+        </member>
+        <member name="M:WebApi.DocumentationController.Functions.SampleGeneratorService.TryFormatJson(System.String)">
+            <summary>
+            Tries to format the string as indented json.
+            </summary>
+            <param name="str">The string.</param>
+            <returns>Indented json.</returns>
+        </member>
+        <member name="M:WebApi.DocumentationController.Functions.SampleGeneratorService.TryFormatXml(System.String)">
+            <summary>
+            Tries to format the string as indented XML.
+            </summary>
+            <param name="str">The string.</param>
+            <returns>Indented XML.</returns>
+        </member>
+        <member name="P:WebApi.DocumentationController.Functions.SampleGeneratorService.SampleObjects">
+            <summary>
+            Gets the objects that are serialized as samples by the supported formatters.
+            </summary>
+        </member>
+        <member name="P:WebApi.DocumentationController.Functions.SampleGeneratorService.Instance">
+            <summary>
+            Gets the instance.
+            </summary>
+            <value>The instance.</value>
+        </member>
+        <member name="T:WebApi.DocumentationController.Models.ApiActionDescription">
+            <summary>
+            Documentation for an <see cref="T:System.Web.Http.ApiController"/> action
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.Models.ApiActionDescription.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.Models.ApiActionDescription"/> class.
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.Models.ApiActionDescription.#ctor(System.Collections.Generic.IEnumerable{System.Web.Http.Description.ApiDescription})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.Models.ApiActionDescription"/> class.
+            </summary>
+            <param name="descriptions">The description.</param>
+        </member>
+        <member name="M:WebApi.DocumentationController.Models.ApiActionDescription.#ctor(System.Linq.IGrouping{System.String,System.Web.Http.Description.ApiDescription})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.Models.ApiActionDescription"/> class.
+            </summary>
+            <param name="group">The group.</param>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiActionDescription.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiActionDescription.Routes">
+            <summary>
+            Gets or sets the paths.
+            </summary>
+            <value>
+            The paths.
+            </value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiActionDescription.MainRoute">
+            <summary>
+            Gets or sets the main route.
+            </summary>
+            <value>The main route.</value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiActionDescription.Summary">
+            <summary>
+            Gets or sets the summary.
+            </summary>
+            <value>
+            The summary.
+            </value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiActionDescription.Example">
+            <summary>
+            Gets or sets the example.
+            </summary>
+            <value>
+            The example.
+            </value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiActionDescription.Remarks">
+            <summary>
+            Gets or sets the remarks.
+            </summary>
+            <value>
+            The remarks.
+            </value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiActionDescription.Returns">
+            <summary>
+            Gets or sets the returns.
+            </summary>
+            <value>
+            The returns.
+            </value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiActionDescription.SampleRequests">
+            <summary>
+            Gets or sets the sample requests.
+            </summary>
+            <value>The sample requests.</value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiActionDescription.SampleResponses">
+            <summary>
+            Gets or sets the sample responses.
+            </summary>
+            <value>The sample responses.</value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiActionDescription.ParameterDescriptions">
+            <summary>
+            Gets or sets the parameter descriptions.
+            </summary>
+            <value>
+            The parameter descriptions.
+            </value>
+        </member>
+        <member name="T:WebApi.DocumentationController.Models.ApiControllerDescription">
+            <summary>
+            Documentation for an <see cref="T:System.Web.Http.ApiController"/>
+            </summary>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiControllerDescription.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiControllerDescription.Actions">
+            <summary>
+            Gets or sets the actions.
+            </summary>
+            <value>
+            The actions.
+            </value>
+        </member>
+        <member name="T:WebApi.DocumentationController.Controllers.HelpController">
+            <summary>
+            Controller for viewing automatically generated documentation.
+            </summary>
+        </member>
+        <member name="F:WebApi.DocumentationController.Controllers.HelpController.controllers">
+            <summary>
+            The controllers.
+            </summary>
+        </member>
+        <member name="F:WebApi.DocumentationController.Controllers.HelpController.currentAssembly">
+            <summary>
+            The current assembly.
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.Controllers.HelpController.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.Controllers.HelpController"/> class.
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.Controllers.HelpController.Index">
+            <summary>
+            Default view.
+            </summary>
+            <returns>The default view.</returns>
+        </member>
+        <member name="M:WebApi.DocumentationController.Controllers.HelpController.Details(System.String)">
+            <summary>
+            Details view
+            </summary>
+            <param name="id">The controller name.</param>
+            <returns>The detailed view of a Controller.</returns>
+        </member>
+        <member name="M:WebApi.DocumentationController.Controllers.HelpController.ModelDiagram">
+            <summary>
+            Models diagram view.
+            </summary>
+            <returns>The model diagram view.</returns>
+        </member>
+        <member name="M:WebApi.DocumentationController.Controllers.HelpController.GetModelDiagramProvider">
+            <summary>
+            Gets the model diagram provider.
+            </summary>
+            <returns>The current model diagram provider. Returns the default implementation if none is registered.</returns>
+        </member>
+        <member name="T:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider">
+            <summary>
+            Documentation provider for XML comments.
+            </summary>
+        </member>
+        <member name="F:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider.MethodExpression">
+            <summary>
+            XPath expression for finding methods.
+            </summary>
+        </member>
+        <member name="F:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider.NullableTypeNameRegex">
+            <summary>
+            Regular expression for determining nullable types.
+            </summary>
+        </member>
+        <member name="F:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider.documentNavigators">
+            <summary>
+            The xml document navigator.
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider"/> class.
+            </summary> 
+        </member>
+        <member name="M:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider.#ctor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider"/> class.
+            </summary>
+            <param name="documentPaths">The document paths.</param>
+        </member>
+        <member name="M:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider.GetDocumentation(System.Web.Http.Controllers.HttpActionDescriptor)">
+            <summary>
+            Gets the action documentation.
+            </summary>
+            <param name="actionDescriptor">The action descriptor.</param>
+            <returns>The documentation for the action as JSON.</returns>
+        </member>
+        <member name="M:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider.GetDocumentation(System.Web.Http.Controllers.HttpParameterDescriptor)">
+            <summary>
+            Gets the parameter documentation.
+            </summary>
+            <param name="parameterDescriptor">The parameter descriptor.</param>
+            <returns>The summary documentation for the parameter as a string.</returns>
+        </member>
+        <member name="M:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider.GetMemberName(System.Reflection.MethodInfo)">
+            <summary>
+            Gets the name of the member.
+            </summary>
+            <param name="method">The method.</param>
+            <returns>The member name as a string.</returns>
+        </member>
+        <member name="M:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider.ProcessTypeName(System.String)">
+            <summary>
+            Processes the name of the type.
+            </summary>
+            <param name="typeName">Name of the type.</param>
+            <returns>The process type name as a string.</returns>
+        </member>
+        <member name="M:WebApi.DocumentationController.DocumentationProviders.XmlCommentDocumentationProvider.GetMemberNode(System.Web.Http.Controllers.HttpActionDescriptor)">
+            <summary>
+            Gets the member node.
+            </summary>
+            <param name="actionDescriptor">The action descriptor.</param>
+            <returns>The xpath navigator for the member node.</returns>
+        </member>
+        <member name="T:WebApi.DocumentationController.Models.ApiReturnTypeAttribute">
+            <summary>
+            Attribute for setting the action return type for the documentation provider
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.Models.ApiReturnTypeAttribute.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.Models.ApiReturnTypeAttribute"/> class.
+            </summary>
+            <param name="returnType">Type of the return.</param>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiReturnTypeAttribute.ReturnType">
+            <summary>
+            Gets or sets the type of the return.
+            </summary>
+            <value>The type of the return.</value>
+        </member>
+        <member name="T:WebApi.DocumentationController.Models.ApiRouteDescription">
+            <summary>
+            Documentation for an API route
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.Models.ApiRouteDescription.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.Models.ApiRouteDescription"/> class.
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.Models.ApiRouteDescription.#ctor(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.Models.ApiRouteDescription"/> class.
+            </summary>
+            <param name="apiDescription">The API description.</param>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiRouteDescription.Method">
+            <summary>
+            Gets or sets the method.
+            </summary>
+            <value>
+            The method.
+            </value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiRouteDescription.Path">
+            <summary>
+            Gets or sets the path.
+            </summary>
+            <value>
+            The path.
+            </value>
+        </member>
+        <member name="T:WebApi.DocumentationController.Models.ApiActionSample">
+            <summary>
+            Sample request/response for api actions
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.Models.ApiActionSample.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.Models.ApiActionSample"/> class.
+            </summary>
+        </member>
+        <member name="M:WebApi.DocumentationController.Models.ApiActionSample.#ctor(System.Net.Http.Formatting.MediaTypeFormatter,System.Web.Http.Description.ApiDescription,WebApi.DocumentationController.Models.ApiActionSampleDirection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WebApi.DocumentationController.Models.ApiActionSample"/> class.
+            </summary>
+            <param name="formatter">The formatter.</param>
+            <param name="apiDescription">The API description.</param>
+            <param name="sampleDirection">The sample direction.</param>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiActionSample.MediaType">
+            <summary>
+            Gets or sets the type of the media.
+            </summary>
+            <value>The type of the media.</value>
+        </member>
+        <member name="P:WebApi.DocumentationController.Models.ApiActionSample.Sample">
+            <summary>
+            Gets or sets the sample.
+            </summary>
+            <value>The sample.</value>
+        </member>
+        <member name="T:WebApi.DocumentationController.Models.ApiActionSampleDirection">
+            <summary>
+            The api action direction
+            </summary>
+        </member>
+        <member name="F:WebApi.DocumentationController.Models.ApiActionSampleDirection.Request">
+            <summary>
+            An HTTP request
+            </summary>
+        </member>
+        <member name="F:WebApi.DocumentationController.Models.ApiActionSampleDirection.Response">
+            <summary>
+            An HTTP response
+            </summary>
+        </member>
+        <member name="T:WebApi.DocumentationController.ViewModels.ApiExplorerViewModel">
+            <summary>
+            Viewmodel for the general API view.
+            </summary>
+        </member>
+        <member name="P:WebApi.DocumentationController.ViewModels.ApiExplorerViewModel.ApiControllerDescriptions">
+            <summary>
+            Gets or sets the API descriptions.
+            </summary>
+            <value>
+            The API descriptions.
+            </value>
+        </member>
+        <member name="P:WebApi.DocumentationController.ViewModels.ApiExplorerViewModel.CurrentAssembly">
+            <summary>
+            Gets or sets the current assembly.
+            </summary>
+            <value>
+            The current assembly.
+            </value>
+        </member>
+        <member name="T:WebApi.DocumentationController.ViewModels.ApiExplorerDetailsViewModel">
+            <summary>
+            Viewmodel for the detailed API view.
+            </summary>
+        </member>
+        <member name="P:WebApi.DocumentationController.ViewModels.ApiExplorerDetailsViewModel.ApiControllerDescription">
+            <summary>
+            Gets or sets the API controller description.
+            </summary>
+            <value>
+            The API controller description.
+            </value>
+        </member>
+        <member name="T:WebApi.DocumentationController.ViewModels.ModelDiagramViewModel">
+            <summary>
+            Viewmodel for the general API view.
+            </summary>
+        </member>
+        <member name="P:WebApi.DocumentationController.ViewModels.ModelDiagramViewModel.ModelDiagramPath">
+            <summary>
+            Gets or sets the model diagram path.
+            </summary>
+            <value>The model diagram path.</value>
+        </member>
+    </members>
+</doc>

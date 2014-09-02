@@ -23,6 +23,9 @@
             //GlobalConfiguration.Configuration.Services.Replace(typeof(IDocumentationProvider), new XmlCommentDocumentationProvider());
             GlobalConfiguration.Configuration.Services.Replace(typeof (IHttpControllerSelector), new RouteVersionedControllerSelector(GlobalConfiguration.Configuration));
             //GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerSelector), new AcceptHeaderVersionedControllerSelector(GlobalConfiguration.Configuration));
+            GlobalConfiguration.Configuration.MapHttpAttributeRoutes();
+
+            GlobalConfiguration.Configuration.EnsureInitialized();
         }
     }
 }
