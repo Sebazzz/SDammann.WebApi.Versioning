@@ -29,14 +29,14 @@
         ///     Initializes a new instance of the <see cref="System.Web.Http.Dispatcher.DefaultHttpControllerSelector" /> class.
         /// </summary>
         /// <param name="configuration"> The configuration. </param>
-        protected VersionedApiControllerSelector(HttpConfiguration configuration) {
+        public VersionedApiControllerSelector(HttpConfiguration configuration) {
             if (configuration == null) {
                 throw new ArgumentNullException("configuration");
             }
 
             this._controllerInfoCache =
                 new Lazy<ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor>>(this.InitializeControllerInfoCache);
-            this._requestControllerIdentificationDetector = new Lazy<IRequestControllerIdentificationDetector>(() => this._configuration.Services.GetRequestControllerIdentificationDetector());
+            this._requestControllerIdentificationDetector = new Lazy<IRequestControllerIdentificationDetector>(() => this._configuration.DependencyResolver.GetRequestControllerIdentificationDetector());
             this._configuration = configuration;
             this._controllerTypeCache = new HttpControllerTypeCache(this._configuration);
         }

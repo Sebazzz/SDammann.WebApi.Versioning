@@ -48,7 +48,7 @@
             IHttpControllerTypeResolver controllersResolver =
                 this._configuration.Services.GetHttpControllerTypeResolver();
             IControllerIdentificationDetector controllerIdentificationDetector =
-                this._configuration.Services.GetControllerIdentificationDetector();
+                this._configuration.DependencyResolver.GetControllerIdentificationDetector();
 
             // group controllers by name
             ICollection<Type> controllerTypes = controllersResolver.GetControllerTypes(assembliesResolver);

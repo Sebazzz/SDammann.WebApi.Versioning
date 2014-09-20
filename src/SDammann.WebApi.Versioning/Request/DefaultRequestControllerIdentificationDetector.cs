@@ -25,8 +25,8 @@
         {
             this._configuration = configuration;
 
-            this._controllerNameDetectorInstance = new Lazy<IRequestControllerNameDetector>(() => this._configuration.Services.GetRequestControllerNameDetector());
-            this._controllerVersionDetectorInstance = new Lazy<IRequestVersionDetector>(() => this._configuration.Services.GetRequestControllerVersionDetector());
+            this._controllerNameDetectorInstance = new Lazy<IRequestControllerNameDetector>(() => this._configuration.DependencyResolver.GetRequestControllerNameDetector());
+            this._controllerVersionDetectorInstance = new Lazy<IRequestVersionDetector>(() => this._configuration.DependencyResolver.GetRequestControllerVersionDetector());
         }
 
         /// <summary>

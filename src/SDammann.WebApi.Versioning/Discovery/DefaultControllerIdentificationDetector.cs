@@ -22,8 +22,8 @@
         public DefaultControllerIdentificationDetector(HttpConfiguration configuration) {
             this._configuration = configuration;
 
-            this._controllerNameDetectorInstance = new Lazy<IControllerNameDetector>(() => this._configuration.Services.GetControllerNameDetector());
-            this._controllerVersionDetectorInstance = new Lazy<IControllerVersionDetector>(() => this._configuration.Services.GetControllerVersionDetector());
+            this._controllerNameDetectorInstance = new Lazy<IControllerNameDetector>(() => this._configuration.DependencyResolver.GetControllerNameDetector());
+            this._controllerVersionDetectorInstance = new Lazy<IControllerVersionDetector>(() => this._configuration.DependencyResolver.GetControllerVersionDetector());
         }
 
         /// <summary>
