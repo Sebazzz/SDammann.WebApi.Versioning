@@ -4,4 +4,12 @@
     internal class CatController : ApiController {
         
     }
+
+    internal class CatCtrl : CatController {
+        
+    }
+
+    internal class Controller : ApiController {
+        
+    }
 }
