@@ -31,7 +31,7 @@
             Assert.AreEqual(controllerName, detectedName, true);
         }
 
-        private IHttpRouteData GetMockingRouteData(Dictionary<string, object> routeData) {
+        private static IHttpRouteData GetMockingRouteData(Dictionary<string, object> routeData) {
             var stub = Substitute.For<IHttpRouteData>();
             stub.Values.Returns(routeData);
             return stub;
