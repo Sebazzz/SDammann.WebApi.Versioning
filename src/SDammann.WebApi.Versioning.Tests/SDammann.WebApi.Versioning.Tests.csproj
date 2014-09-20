@@ -68,10 +68,18 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Discovery\TypeNameControllerNameDetectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSupport\Version1\CatController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SDammann.WebApi.Versioning\SDammann.WebApi.Versioning.csproj">
+      <Project>{406e64f7-f097-44b0-8730-e79567f1ed4e}</Project>
+      <Name>SDammann.WebApi.Versioning</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
