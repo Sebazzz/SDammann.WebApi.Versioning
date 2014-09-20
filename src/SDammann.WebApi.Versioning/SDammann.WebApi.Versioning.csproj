@@ -81,6 +81,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\IRequestControllerNameDetector.cs" />
     <Compile Include="Request\IRequestVersionDetector.cs" />
+    <Compile Include="VersionedApiControllerSelector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

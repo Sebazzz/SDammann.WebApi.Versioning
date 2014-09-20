@@ -22,8 +22,7 @@
             this._cache = new Lazy<Dictionary<ControllerIdentification, ILookup<string, Type>>>(this.InitializeCache);
         }
 
-        internal Dictionary<ControllerIdentification, ILookup<string, Type>> Cache
-        {
+        internal Dictionary<ControllerIdentification, ILookup<string, Type>> Cache {
             get { return this._cache.Value; }
         }
 
@@ -46,14 +45,17 @@
 
         private Dictionary<ControllerIdentification, ILookup<string, Type>> InitializeCache() {
             IAssembliesResolver assembliesResolver = this._configuration.Services.GetAssembliesResolver();
-            IHttpControllerTypeResolver controllersResolver = this._configuration.Services.GetHttpControllerTypeResolver();
-            IControllerIdentificationDetector controllerIdentificationDetector = this._configuration.Services.GetControllerIdentificationDetector();
+            IHttpControllerTypeResolver controllersResolver =
+                this._configuration.Services.GetHttpControllerTypeResolver();
+            IControllerIdentificationDetector controllerIdentificationDetector =
+                this._configuration.Services.GetControllerIdentificationDetector();
 
             // group controllers by name
             ICollection<Type> controllerTypes = controllersResolver.GetControllerTypes(assembliesResolver);
             IEnumerable<IGrouping<ControllerIdentification, Type>> groupedByName =
-                controllerTypes.Select(x => new {ClrType = x, Id = controllerIdentificationDetector.GetIdentification(x)})
-                               .GroupBy(x => x.Id, x=>x.ClrType);
+                controllerTypes.Select(
+                    x => new {ClrType = x, Id = controllerIdentificationDetector.GetIdentification(x)})
+                    .GroupBy(x => x.Id, x => x.ClrType);
 
             return groupedByName.ToDictionary(
                 g => g.Key,
