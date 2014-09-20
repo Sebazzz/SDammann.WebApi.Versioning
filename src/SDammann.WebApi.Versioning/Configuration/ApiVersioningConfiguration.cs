@@ -1,6 +1,5 @@
 namespace SDammann.WebApi.Versioning.Configuration {
     using System;
-    using System.Collections.Generic;
     using Discovery;
     using Request;
 
@@ -10,9 +9,10 @@ namespace SDammann.WebApi.Versioning.Configuration {
     public sealed class ApiVersioningConfiguration {
         internal Type RequestVersionDetector;
         internal Type RequestControllerNameDetectorType;
+        internal Type RequestControllerIdentificationDetectorType = typeof(DefaultRequestControllerIdentificationDetector);
         internal Type ControllerNameDetectorType;
         internal Type ControllerVersionDetectorType;
-        internal Type ControllerIdentificationDetectorType;
+        internal Type ControllerIdentificationDetectorType = typeof(DefaultControllerIdentificationDetector);
 
         /// <summary>
         /// Configures an type for version detecting on the API request
@@ -77,6 +77,26 @@ namespace SDammann.WebApi.Versioning.Configuration {
             this.ControllerIdentificationDetectorType = type;
             return this;
         }
+
+        /// <summary>
+        /// Configures an type for detecting the complete identification (name plus version) of a controller. Overriding this
+        /// default behavior is usually not needed as detection of version and name is seperated in two other services.
+        /// </summary>
+        public ApiVersioningConfiguration ConfigureRequestControllerIdentificationDetector<TControllerIdentificationDetector>() where TControllerIdentificationDetector : IRequestControllerIdentificationDetector
+        {
+            return this.ConfigureRequestControllerIdentificationDetector(typeof(TControllerIdentificationDetector));
+        }
+
+        /// <summary>
+        /// Configures an type for detecting the complete identification (name plus version) of a controller. Overriding this
+        /// default behavior is usually not needed as detection of version and name is seperated in two other services.
+        /// </summary>
+        public ApiVersioningConfiguration ConfigureRequestControllerIdentificationDetector(Type type)
+        {
+            this.RequestControllerIdentificationDetectorType = type;
+            return this;
+        }
+
 
         /// <summary>
         /// Configures an type for detecting the version of a controller

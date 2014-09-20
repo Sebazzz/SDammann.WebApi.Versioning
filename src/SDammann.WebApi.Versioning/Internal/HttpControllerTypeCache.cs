@@ -26,15 +26,15 @@
             get { return this._cache.Value; }
         }
 
-        public ICollection<Type> GetControllerTypes(ControllerIdentification controllerName) {
-            if (controllerName == null) {
-                throw new ArgumentNullException("controllerName");
+        public ICollection<Type> GetControllerTypes(ControllerIdentification controllerId) {
+            if (controllerId == null) {
+                throw new ArgumentNullException("controllerId");
             }
 
             var matchingTypes = new HashSet<Type>();
 
             ILookup<string, Type> namespaceLookup;
-            if (this._cache.Value.TryGetValue(controllerName, out namespaceLookup)) {
+            if (this._cache.Value.TryGetValue(controllerId, out namespaceLookup)) {
                 foreach (var namespaceGroup in namespaceLookup) {
                     matchingTypes.UnionWith(namespaceGroup);
                 }

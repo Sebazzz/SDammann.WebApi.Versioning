@@ -6,9 +6,9 @@
     using Internal;
 
     /// <summary>
-   /// Default implementation of <see cref="IControllerIdentificationDetector"/> uses the <see cref="IControllerNameDetector"/> and <see cref="IControllerVersionDetector"/>
-   /// as configured in <see cref="ApiVersioningConfiguration"/>
-   /// </summary>
+    /// Default implementation of <see cref="IControllerIdentificationDetector"/> uses the <see cref="IControllerNameDetector"/> and <see cref="IControllerVersionDetector"/>
+    /// as configured in <see cref="ApiVersioningConfiguration"/>
+    /// </summary>
  
     public class DefaultControllerIdentificationDetector : IControllerIdentificationDetector {
         private readonly HttpConfiguration _configuration;
@@ -67,7 +67,7 @@
             IControllerNameDetector instance = this._controllerNameDetectorInstance.Value;
             Debug.Assert(instance != null);
 
-            return instance.GetName(controllerType);
+            return instance.GetControllerName(controllerType);
         }
     }
 }

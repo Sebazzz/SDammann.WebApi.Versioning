@@ -61,6 +61,24 @@ namespace SDammann.WebApi.Versioning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiple possibilities for {0}, using route template {1}. The following types were selected: {2}..
+        /// </summary>
+        internal static string AmbigiousControllerRequest {
+            get {
+                return ResourceManager.GetString("AmbigiousControllerRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not determine version and controller name from the request..
+        /// </summary>
+        internal static string CannotDetermineRequestVersion {
+            get {
+                return ResourceManager.GetString("CannotDetermineRequestVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not determine controller identity of controller type &apos;{0}&apos;..
         /// </summary>
         internal static string ControllerCouldNotBeIdentified {

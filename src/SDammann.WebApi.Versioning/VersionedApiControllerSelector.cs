@@ -1,32 +1,175 @@
 ﻿namespace SDammann.WebApi.Versioning {
+    using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Linq;
+    using System.Net;
     using System.Net.Http;
+    using System.Text;
+    using System.Web.Http;
     using System.Web.Http.Controllers;
     using System.Web.Http.Dispatcher;
+    using System.Web.Http.Routing;
+    using Internal;
+    using Request;
 
     /// <summary>
-    /// An <see cref="IHttpControllerSelector"/> implementation that offers API versioning
+    ///     An <see cref="IHttpControllerSelector" /> implementation that offers API versioning
     /// </summary>
     public class VersionedApiControllerSelector : IHttpControllerSelector {
+        private readonly HttpConfiguration _configuration;
+
+        private readonly Lazy<ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor>> _controllerInfoCache;
+        private readonly Lazy<IRequestControllerIdentificationDetector> _requestControllerIdentificationDetector;
+
+        private readonly HttpControllerTypeCache _controllerTypeCache;
+
         /// <summary>
-        /// Selects a <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor"/> for the given <see cref="T:System.Net.Http.HttpRequestMessage"/>. 
+        ///     Initializes a new instance of the <see cref="System.Web.Http.Dispatcher.DefaultHttpControllerSelector" /> class.
+        /// </summary>
+        /// <param name="configuration"> The configuration. </param>
+        protected VersionedApiControllerSelector(HttpConfiguration configuration) {
+            if (configuration == null) {
+                throw new ArgumentNullException("configuration");
+            }
+
+            this._controllerInfoCache =
+                new Lazy<ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor>>(this.InitializeControllerInfoCache);
+            this._requestControllerIdentificationDetector = new Lazy<IRequestControllerIdentificationDetector>(() => this._configuration.Services.GetRequestControllerIdentificationDetector());
+            this._configuration = configuration;
+            this._controllerTypeCache = new HttpControllerTypeCache(this._configuration);
+        }
+
+
+        /// <summary>
+        ///     Selects a <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor" /> for the given
+        ///     <see cref="T:System.Net.Http.HttpRequestMessage" />.
         /// </summary>
         /// <returns>
-        /// An <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor"/> instance.
+        ///     An <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor" /> instance.
         /// </returns>
         /// <param name="request">The request message.</param>
         public HttpControllerDescriptor SelectController(HttpRequestMessage request) {
-            throw new System.NotImplementedException();
+            if (request == null) {
+                throw new ArgumentNullException("request");
+            }
+
+            return this.OnSelectController(request);
         }
 
         /// <summary>
-        /// Returns a map, keyed by controller string, of all <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor"/> that the selector can select.  This is primarily called by <see cref="T:System.Web.Http.Description.IApiExplorer"/> to discover all the possible controllers in the system. 
+        /// Select a controller. The <paramref name="request"/> parameter is guaranteed not to be <c>null</c>.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        protected virtual HttpControllerDescriptor OnSelectController(HttpRequestMessage request) {
+            ControllerIdentification controllerName = this.GetControllerIdentificationFromRequest(request);
+
+            if (String.IsNullOrEmpty(controllerName.Name)) {
+                throw new HttpResponseException(request.CreateResponse(HttpStatusCode.NotFound));
+            }
+
+            HttpControllerDescriptor controllerDescriptor;
+            if (this._controllerInfoCache.Value.TryGetValue(controllerName, out controllerDescriptor)) {
+                return controllerDescriptor;
+            }
+
+            ICollection<Type> matchingTypes = this._controllerTypeCache.GetControllerTypes(controllerName);
+
+            // ControllerInfoCache is already initialized.
+            Contract.Assert(matchingTypes.Count != 1);
+
+            if (matchingTypes.Count == 0) {
+                // no matching types
+                throw new HttpResponseException(request.CreateResponse(HttpStatusCode.NotFound,
+                    "The API '" + controllerName + "' doesn't exist"));
+            }
+
+            // multiple matching types
+            throw new HttpResponseException(request.CreateResponse(HttpStatusCode.InternalServerError,
+                CreateAmbiguousControllerExceptionMessage(request.GetRouteData().Route, controllerName.Name, matchingTypes)));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ControllerIdentification"/> from the request. This method is guaranteed not to return <c>null</c>.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        protected ControllerIdentification GetControllerIdentificationFromRequest(HttpRequestMessage request) {
+            IRequestControllerIdentificationDetector controllerIdentificationDetector = this._requestControllerIdentificationDetector.Value;
+            ControllerIdentification id = controllerIdentificationDetector.GetIdentification(request);
+
+            if (id == null) {
+                throw new HttpResponseException(request.CreateResponse(HttpStatusCode.InternalServerError, ExceptionResources.CannotDetermineRequestVersion));
+            }
+
+            return id;
+        }
+
+        private static string CreateAmbiguousControllerExceptionMessage(IHttpRoute route, string controllerName, IEnumerable<Type> matchingTypes) {
+            Contract.Assert(route != null);
+            Contract.Assert(controllerName != null);
+            Contract.Assert(matchingTypes != null);
+
+            // Generate an exception containing all the controller types
+            StringBuilder typeList = new StringBuilder();
+            foreach (Type matchedType in matchingTypes)
+            {
+                typeList.AppendLine();
+                typeList.Append(matchedType.FullName);
+            }
+
+            return String.Format(ExceptionResources.AmbigiousControllerRequest,
+                                 controllerName,
+                                 route.RouteTemplate,
+                                 typeList);
+        }
+
+
+
+        /// <summary>
+        ///     Returns a map, keyed by controller string, of all
+        ///     <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor" /> that the selector can select.  This is
+        ///     primarily called by <see cref="T:System.Web.Http.Description.IApiExplorer" /> to discover all the possible
+        ///     controllers in the system.
         /// </summary>
         /// <returns>
-        /// A map of all <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor"/> that the selector can select, or null if the selector does not have a well-defined mapping of <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor"/>.
+        ///     A map of all <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor" /> that the selector can select, or
+        ///     null if the selector does not have a well-defined mapping of
+        ///     <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor" />.
         /// </returns>
         public IDictionary<string, HttpControllerDescriptor> GetControllerMapping() {
             return null; // currently not implemented so return a sane default value
+        }
+
+        private ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor> InitializeControllerInfoCache() {
+            // let's find and cache the found controllers
+            var result = new ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor>(ControllerIdentification.Comparer);
+            var duplicateControllers = new HashSet<ControllerIdentification>();
+            Dictionary<ControllerIdentification, ILookup<string, Type>> controllerTypeGroups =this._controllerTypeCache.Cache;
+
+            foreach (var controllerTypeGroup in controllerTypeGroups) {
+                ControllerIdentification controllerName = controllerTypeGroup.Key;
+
+                foreach (var controllerTypesGroupedByNs in controllerTypeGroup.Value) {
+                    foreach (Type controllerType in controllerTypesGroupedByNs) {
+                        if (result.Keys.Contains(controllerName)) {
+                            duplicateControllers.Add(controllerName);
+                            break;
+                        }
+                        result.TryAdd(controllerName,
+                            new HttpControllerDescriptor(this._configuration, controllerName.Name, controllerType));
+                    }
+                }
+            }
+
+            foreach (ControllerIdentification duplicateController in duplicateControllers) {
+                HttpControllerDescriptor descriptor;
+                result.TryRemove(duplicateController, out descriptor);
+            }
+
+            return result;
         }
     }
 }

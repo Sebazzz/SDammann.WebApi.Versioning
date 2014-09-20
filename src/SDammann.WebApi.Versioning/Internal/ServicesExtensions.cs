@@ -26,6 +26,10 @@
             return servicesContainer.GetServiceOrThrow<IRequestVersionDetector>(ApiVersioning.Configuration.RequestVersionDetector);
         }
 
+        public static IRequestControllerIdentificationDetector GetRequestControllerIdentificationDetector(this ServicesContainer servicesContainer){
+            return servicesContainer.GetServiceOrThrow<IRequestControllerIdentificationDetector>(ApiVersioning.Configuration.RequestControllerIdentificationDetectorType);
+        }
+
         private static TService GetServiceOrThrow<TService>(this ServicesContainer servicesContainer, Type clrType) where TService : class {
             clrType = clrType ?? typeof (TService);
 

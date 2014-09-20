@@ -14,6 +14,6 @@
         /// </remarks>
         /// <param name="controllerType"></param>
         /// <returns></returns>
-        string GetName(Type controllerType);
+        string GetControllerName(Type controllerType);
     }
 }
