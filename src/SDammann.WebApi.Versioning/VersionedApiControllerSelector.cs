@@ -101,7 +101,7 @@
             ControllerIdentification id = controllerIdentificationDetector.GetIdentification(request);
 
             if (id == null) {
-                throw new HttpResponseException(request.CreateResponse(HttpStatusCode.InternalServerError, ExceptionResources.CannotDetermineRequestVersion));
+                throw new HttpResponseException(request.CreateResponse(HttpStatusCode.BadRequest, ExceptionResources.CannotDetermineRequestVersion));
             }
 
             return id;
