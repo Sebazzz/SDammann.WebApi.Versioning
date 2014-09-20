@@ -47,8 +47,7 @@
         private Dictionary<ControllerIdentification, ILookup<string, Type>> InitializeCache() {
             IAssembliesResolver assembliesResolver = this._configuration.Services.GetAssembliesResolver();
             IHttpControllerTypeResolver controllersResolver = this._configuration.Services.GetHttpControllerTypeResolver();
-            IControllerIdentificationDetector controllerIdentificationDetector = 
-                new DelegatingControllerIdentificationDetector(this._configuration.Services.GetControllerIdentificationDetectors());
+            IControllerIdentificationDetector controllerIdentificationDetector = this._configuration.Services.GetControllerIdentificationDetector();
 
             // group controllers by name
             ICollection<Type> controllerTypes = controllersResolver.GetControllerTypes(assembliesResolver);

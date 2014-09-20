@@ -2,18 +2,18 @@
     using System;
 
     /// <summary>
-    /// Defines the interface for classes that can detect a unique controller identification for a controller
+    /// Defines an interface for classes which implement detect of controller names
     /// </summary>
-    public interface IControllerIdentificationDetector {
+    public interface IControllerNameDetector {
         /// <summary>
-        /// Gets an <see cref="ControllerIdentification"/> for the specified type. 
+        /// Gets an unqualified name for the specified controller type
         /// </summary>
         /// <remarks>
         /// Implementors should implement this as a high-performance method (at least on the negative path) 
         /// because it will be called for all types  in the referenced assemblies during the application initialization phase.
         /// </remarks>
-        /// <param name="controllerType">.NET CLR type for controller</param>
+        /// <param name="controllerType"></param>
         /// <returns></returns>
-        ControllerIdentification GetIdentification(Type controllerType);
+        string GetName(Type controllerType);
     }
 }

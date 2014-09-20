@@ -64,9 +64,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiVersion.cs" />
+    <Compile Include="Configuration\ApiVersioning.cs" />
+    <Compile Include="Configuration\ApiVersioningConfiguration.cs" />
     <Compile Include="ControllerIdentification.cs" />
+    <Compile Include="Discovery\DefaultControllerIdentificationDetector.cs" />
     <Compile Include="Discovery\IControllerIdentificationDetector.cs" />
-    <Compile Include="Discovery\DelegatingControllerIdentificationDetector.cs" />
+    <Compile Include="Discovery\IControllerNameDetector.cs" />
+    <Compile Include="Discovery\IControllerVersionDetector.cs" />
     <Compile Include="ExceptionResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -88,6 +92,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

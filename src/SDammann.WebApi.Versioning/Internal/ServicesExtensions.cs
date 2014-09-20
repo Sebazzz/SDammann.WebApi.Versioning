@@ -1,46 +1,40 @@
 ﻿namespace SDammann.WebApi.Versioning.Internal {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Http.Controllers;
+    using Configuration;
     using Discovery;
     using Request;
 
     internal static class ServicesExtensions {
-        public static IEnumerable<IControllerIdentificationDetector> GetControllerIdentificationDetectors(this ServicesContainer servicesContainer) {
-            return servicesContainer.GetServicesOrThrow<IControllerIdentificationDetector>();
+        public static IControllerIdentificationDetector GetControllerIdentificationDetector(this ServicesContainer servicesContainer) {
+            return servicesContainer.GetServiceOrThrow<IControllerIdentificationDetector>(ApiVersioning.Configuration.ControllerIdentificationDetectorType);
         }
 
-        public static IEnumerable<IRequestControllerNameDetector> GetRequestControllerNameDetectors(this ServicesContainer servicesContainer) {
-            return servicesContainer.GetServicesOrThrow<IRequestControllerNameDetector>();
+        public static IControllerNameDetector GetControllerNameDetector(this ServicesContainer servicesContainer) {
+            return servicesContainer.GetServiceOrThrow<IControllerNameDetector>(ApiVersioning.Configuration.ControllerNameDetectorType);
         }
 
-        public static IEnumerable<IRequestVersionDetector> GetRequestVersionDetectors(this ServicesContainer servicesContainer) {
-            return servicesContainer.GetServicesOrThrow<IRequestVersionDetector>();
+        public static IControllerVersionDetector GetControllerVersionDetector(this ServicesContainer servicesContainer) {
+            return servicesContainer.GetServiceOrThrow<IControllerVersionDetector>(ApiVersioning.Configuration.ControllerVersionDetectorType);
         }
 
-        private static TService GetServiceOrThrow<TService>(this ServicesContainer servicesContainer)where TService : class {
-            Type clrType = typeof (TService);
+        public static IRequestControllerNameDetector GetRequestControllerNameDetector(this ServicesContainer servicesContainer) {
+            return servicesContainer.GetServiceOrThrow<IRequestControllerNameDetector>(ApiVersioning.Configuration.RequestControllerNameDetectorType);
+        }
+
+        public static IRequestVersionDetector GetRequestControllerVersionDetector(this ServicesContainer servicesContainer){
+            return servicesContainer.GetServiceOrThrow<IRequestVersionDetector>(ApiVersioning.Configuration.RequestVersionDetector);
+        }
+
+        private static TService GetServiceOrThrow<TService>(this ServicesContainer servicesContainer, Type clrType) where TService : class {
+            clrType = clrType ?? typeof (TService);
 
             var service = servicesContainer.GetService(clrType) as TService;
             if (service == null) {
-                throw new InvalidOperationException(String.Format(ExceptionResources.DependencyContainerNotConfigured,
-                    clrType.FullName));
+                throw new InvalidOperationException(String.Format(ExceptionResources.DependencyContainerNotConfigured, clrType.FullName));
             }
 
             return service;
-        }
-
-        private static IEnumerable<TService> GetServicesOrThrow<TService>(this ServicesContainer servicesContainer)where TService : class {
-            Type clrType = typeof (TService);
-
-            List<TService> services = servicesContainer.GetServices(clrType).OfType<TService>().ToList();
-            if (services.Count == 0) {
-                throw new InvalidOperationException(String.Format(ExceptionResources.DependencyContainerNotConfigured,
-                    clrType.FullName));
-            }
-
-            return services;
         }
     }
 }
