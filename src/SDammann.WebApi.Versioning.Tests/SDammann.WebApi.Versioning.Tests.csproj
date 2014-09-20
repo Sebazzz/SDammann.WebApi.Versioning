@@ -68,6 +68,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Discovery\DefaultAttributeControllerVersionDetector.cs" />
     <Compile Include="Discovery\TypeNameControllerNameDetectorTests.cs" />
     <Compile Include="Discovery\NamespaceControllerVersionDetectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

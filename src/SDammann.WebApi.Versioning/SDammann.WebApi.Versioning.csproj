@@ -67,6 +67,9 @@
     <Compile Include="Configuration\ApiVersioning.cs" />
     <Compile Include="Configuration\ApiVersioningConfiguration.cs" />
     <Compile Include="ControllerIdentification.cs" />
+    <Compile Include="Discovery\ApiVersionAttribute.cs" />
+    <Compile Include="Discovery\AttributeControllerVersionDetector.cs" />
+    <Compile Include="Discovery\DefaultAttributeControllerVersionDetector.cs" />
     <Compile Include="Discovery\DefaultControllerIdentificationDetector.cs" />
     <Compile Include="Discovery\DefaultControllerNameDetector.cs" />
     <Compile Include="Discovery\DefaultControllerVersionDetector.cs" />
