@@ -69,9 +69,11 @@
     <Compile Include="ControllerIdentification.cs" />
     <Compile Include="Discovery\DefaultControllerIdentificationDetector.cs" />
     <Compile Include="Discovery\DefaultControllerNameDetector.cs" />
+    <Compile Include="Discovery\DefaultControllerVersionDetector.cs" />
     <Compile Include="Discovery\IControllerIdentificationDetector.cs" />
     <Compile Include="Discovery\IControllerNameDetector.cs" />
     <Compile Include="Discovery\IControllerVersionDetector.cs" />
+    <Compile Include="Discovery\NamespaceControllerVersionDetector.cs" />
     <Compile Include="Discovery\TypeNameControllerNameDetector.cs" />
     <Compile Include="ExceptionResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -85,6 +87,7 @@
     <Compile Include="Request\IRequestControllerIdentificationDetector.cs" />
     <Compile Include="Request\IRequestControllerNameDetector.cs" />
     <Compile Include="Request\IRequestVersionDetector.cs" />
+    <Compile Include="SemVerApiVersion.cs" />
     <Compile Include="VersionedApiControllerSelector.cs" />
   </ItemGroup>
   <ItemGroup>
