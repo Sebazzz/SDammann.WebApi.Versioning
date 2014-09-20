@@ -8,7 +8,7 @@ namespace SDammann.WebApi.Versioning.Configuration {
     /// </summary>
     public sealed class ApiVersioningConfiguration {
         internal Type RequestVersionDetector;
-        internal Type RequestControllerNameDetectorType;
+        internal Type RequestControllerNameDetectorType = typeof(DefaultRequestControllerNameDetector);
         internal Type RequestControllerIdentificationDetectorType = typeof(DefaultRequestControllerIdentificationDetector);
         internal Type ControllerNameDetectorType = typeof(DefaultControllerNameDetector);
         internal Type ControllerVersionDetectorType = typeof(DefaultControllerVersionDetector);

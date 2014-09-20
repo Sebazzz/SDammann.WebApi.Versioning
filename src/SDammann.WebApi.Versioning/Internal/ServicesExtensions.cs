@@ -33,8 +33,16 @@
         private static TService GetServiceOrThrow<TService>(this ServicesContainer servicesContainer, Type clrType) where TService : class {
             clrType = clrType ?? typeof (TService);
 
+            // get by DI
             var service = servicesContainer.GetService(clrType) as TService;
             if (service == null) {
+                throw new InvalidOperationException(String.Format(ExceptionResources.DependencyContainerNotConfigured, clrType.FullName));
+            }
+
+            // get by activation of parameterless constructor
+            try {
+                service = Activator.CreateInstance(clrType) as TService;
+            } catch (Exception) {
                 throw new InvalidOperationException(String.Format(ExceptionResources.DependencyContainerNotConfigured, clrType.FullName));
             }
 

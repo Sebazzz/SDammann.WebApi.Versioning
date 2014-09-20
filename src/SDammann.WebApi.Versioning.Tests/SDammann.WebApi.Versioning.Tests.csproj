@@ -72,6 +72,7 @@
     <Compile Include="Discovery\TypeNameControllerNameDetectorTests.cs" />
     <Compile Include="Discovery\NamespaceControllerVersionDetectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Request\RouteKeyRequestControllerNameDetectorTests.cs" />
     <Compile Include="TestSupport\Version1\CatController.cs" />
   </ItemGroup>
   <ItemGroup>
