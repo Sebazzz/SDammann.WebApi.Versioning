@@ -68,9 +68,11 @@
     <Compile Include="Configuration\ApiVersioningConfiguration.cs" />
     <Compile Include="ControllerIdentification.cs" />
     <Compile Include="Discovery\DefaultControllerIdentificationDetector.cs" />
+    <Compile Include="Discovery\DefaultControllerNameDetector.cs" />
     <Compile Include="Discovery\IControllerIdentificationDetector.cs" />
     <Compile Include="Discovery\IControllerNameDetector.cs" />
     <Compile Include="Discovery\IControllerVersionDetector.cs" />
+    <Compile Include="Discovery\TypeNameControllerNameDetector.cs" />
     <Compile Include="ExceptionResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
