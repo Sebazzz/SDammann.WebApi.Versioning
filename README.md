@@ -6,7 +6,7 @@ Versioning support for ASP.NET Web Api. Associated blog post: http://damsteen.nl
 There is also a [Nuget package](https://nuget.org/packages/SDammann.WebApi.Versioning) available.
 
 ### New testing version
-There is a new rewritten version being developed which offers more extensibility. Please check the   [vnext](https://github.com/Sebazzz/SDammann.WebApi.Versioning/tree/vnext) branch. The documentation has not been finalized yet nor a prerelease package has been pushed, but based on [this file](https://github.com/Sebazzz/SDammann.WebApi.Versioning/blob/vnext/src/SDammann.WebApi.Versioning.Tests/Integration/IntegrationTestManager.cs#L54) you should be able to get it working with your project.
+There is a new rewritten version being developed which offers more extensibility. Please check the   [vnext](https://github.com/Sebazzz/SDammann.WebApi.Versioning/tree/vnext) branch. The documentation has not been finalized yet nor a prerelease package has been pushed, but based on [the README](https://github.com/Sebazzz/SDammann.WebApi.Versioning/blob/vnext/README.md) you should be able to get it working with your project.
 
 
 
