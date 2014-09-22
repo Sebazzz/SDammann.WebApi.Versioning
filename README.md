@@ -1,7 +1,7 @@
 # SDammann.WebApi.Versioning
 
 
-Versioning support for ASP.NET Web Api. Associated blog post: http://damsteen.nl/blog/implementing-versioning-in-asp.net-web-api
+Easy, well-tested, and extendable ASP.NET Web API versioning.
 
 There is also a [Nuget package](https://nuget.org/packages/SDammann.WebApi.Versioning) available.
 
