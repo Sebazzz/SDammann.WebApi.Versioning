@@ -1,61 +1,68 @@
-SDammann.WebApi.Versioning
-==========================
+# SDammann.WebApi.Versioning
+
 
 Versioning support for ASP.NET Web Api. Associated blog post: http://damsteen.nl/blog/implementing-versioning-in-asp.net-web-api
 
 There is also a [Nuget package](https://nuget.org/packages/SDammann.WebApi.Versioning) available.
 
-Using the library
---------------------------
-Put something like this in your Global.asax `Application_Start`:
+## Using the library
+### Setting up
+In your OWIN Web API configuration delegate, put the following code. The code assumes the `config` variable is of type `HttpConfiguration`.
 
-	// enable API versioning
-	GlobalConfiguration.Configuration.Services.Replace(typeof (IHttpControllerSelector),
-												   new XXXX(GlobalConfiguration.Configuration));
+    config.Services.Replace(typeof(IHttpControllerSelector), new VersionedApiControllerSelector(config));
 
+This will ensure the library's routines will be used for selecting the correct API controller. Also make sure to register the `DefaultControllerIdentificationDetector` and `DefaultRequestControllerIdentificationDetector` class with your dependency container.
 
-Replace XXX with the name of an `IHttpControllerSelector` implementation from the SDammann.WebApi.Versioning 
-namespace. The implementations that are included are listed below.
+Next, choose a versioning scheme and register it with the library. For example, to use versioning by API route (this will use urls like `/api/v1.2/product/`) include the following in your Web API configuration delegate:
 
-The fully qualified name of the API controllers must include one section that is equal to VersionN, where
-N is an version number. For example: `TestWebsite.Api.Version1.HelloController` is an controller with name
-"Hello" for version 1 of the API. This convention can be changed, see below.
+    ApiVersioning.Configure()
+                 .ConfigureRequestVersionDetector<DefaultRouteKeyVersionDetector>();
 
-Changing the API controller convention
-------------------------------------------
+### Choosing an API versioning scheme
+Currently the library supports two API versioning schemes.
 
-It is possible to override the default convention used for detecting a Controller's version. 
-This convention can be changed by assigning a different value to the `VersionedControllerSelector.VersionPrefix` property (new since 1.2).
+#### API versions by URL / routing. 
+This will allow the API version to be chosen by your URL routing scheme. Example:
 
-Make sure to do this very early in your application, for example in the `Application_Start` method in Global.asax.
+	config.Routes.MapHttpRoute(
+		name: "DefaultApi",
+		routeTemplate: "api/v{version}/{controller}/{id}",
+		defaults: new { id = RouteParameter.Optional }
+	);
 
-IHttpControllerSelector implementations
-------------------------------------------
+    ApiVersioning.Configure()
+                 .ConfigureRequestVersionDetector<DefaultRouteKeyVersionDetector>();
 
-`SDammann.WebApi.Versioning.RouteVersionedControllerSelector`:
-	Supports selecting an API controller by the "version" string in the request URI. Requires the routing
-	table to be modified to include an "version" key. You can use something like this:
+#### API versions by HTTP header
+A scheme preferred by many REST purists. This allows the API version to be chosen by using the MIME type in the Accept header of the request. In order to achieve this, inherit from `AcceptHeaderRequestVersionDetector` and implement the `GetVersionFromSingleHeader` method.
 
-	routes.MapHttpRoute(
-					name: "DefaultApi",
-					routeTemplate: "api/v{version}/{controller}/{id}",
-					defaults: new {id = RouteParameter.Optional}
-		);
+Next, register your implementation in the Web API configuration delegate:
 
-`SDammann.WebApi.Versioning.VersionHeaderVersionedControllerSelector`:
-	Supports selecting an API controller by the "X-Api-Version" HTTP header. The integer value of the
-	HTTP header determines the API version to use. 
+    ApiVersioning.Configure()
+                 .ConfigureRequestVersionDetector<YourCustomRoutingDetector>();
 
-`SDammann.WebApi.Versioning.AcceptHeaderVersionedControllerSelectorBase`:
-	This in an abstract class that supports versioning by the "Accept" HTTP header and enables callers
-	to use an Accept header value like 'application/vnd.company.myapp-v3+json' to select the API
-	version. Some REST-evangelists think this is the best way to implement API versioning.
-	Derived classes need to implement one method to return the API version from the media type string
-	in the Accept header: GetVersion
-	
-`SDammann.WebApi.Versioning.AcceptHeaderControllerSelector`:
-	Implementation of the `AcceptHeaderVersionedControllerSelector` class. Requires the Accept header to
-	be in the format of '<mime-type>; version=<number>'. For example: 'application/json; version=1'.
+Don't forget to set-up your custom MIME-type in [content negotiation](http://www.asp.net/web-api/overview/formats-and-model-binding/content-negotiation) so ASP.NET Web API will output the correct response format.
+
+### Concepts
+The library distinguishes several responsibilities in API versioning:
+
+- Controller naming / versioning
+- External request naming / versioning
+- The definition of a version itself
+
+Controller name and version detection are implemented using the `IControllerNameDetector` and `IControllerVersionDetector` interfaces. The default `DefaultControllerNameDetector` implementation uses the ASP.NET Web API conventions, like requiring your controller class name to end with `Controller`. The default `DefaultControllerVersionDetector` expects you to put your controllers in 'versioned' namespaces. For instance, controllers in namespace `MyApi.Version1_1` will point to version 1.1 of the API. There is also an implementation available that allows you to use attributes instead (`DefaultAttributeControllerVersionDetector`).
+
+Request controller naming and versioning is implemented using the `IRequestControllerNameDetector` and `IRequestVersionDetector` interfaces. The default `DefaultRequestControllerNameDetector` implementation uses the ASP.NET Web API conventions. There is no default `IRequestVersionDetector` configured. The library forces you to choose an API versioning scheme. 
+
+An API version itself is abstracted away as an `ApiVersion`. This is an abstract class that allows the concept of versioning itself to be customizable. For example, the `SemVerApiVersion` uses a one to four numbers to be used for API versions. One could easily extend this to support letters, for example as designation for 'beta' and 'alpha' by inheriting from `SemVerApiVersion` and then implement `IControllerVersionDetector` and `IRequestVersionDetector` or extend the existing implementations.
+
+## Advanced
+By default, a Web API controller is identified by its version and name (in the form of a `ControllerIdentification` instance). It is possible to extend or modify this behavior. This is done by inheriting from the `ControllerIdentification` class and implementing custom versions of the `IControllerIdentificationDetector` and `IRequestControllerIdentificationDetector` interfaces or extending the default implementations. 
+
+Note this is usually not necessary, but if you'd like to go beyond names and versions you can use this approach.
+
+## Contact
+Any questions or remarks? Drop me a twitter message (@sebazzz91) or put an issue in the issue tracker.
 
 	
 License
