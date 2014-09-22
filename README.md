@@ -5,12 +5,16 @@ Versioning support for ASP.NET Web Api. Associated blog post: http://damsteen.nl
 
 There is also a [Nuget package](https://nuget.org/packages/SDammann.WebApi.Versioning) available.
 
-New testing version
---------------------------
-There is a new rewritten version being developed. Please check the   [vnext](https://github.com/Sebazzz/SDammann.WebApi.Versioning/tree/vnext) branch. The documentation has not been finalized yet nor a prerelease package has been pushed, but based on [this file](https://github.com/Sebazzz/SDammann.WebApi.Versioning/blob/vnext/src/SDammann.WebApi.Versioning.Tests/Integration/IntegrationTestManager.cs#L54) you should be able to get it working with your project.
+### New testing version
+There is a new rewritten version being developed which offers more extensibility. Please check the   [vnext](https://github.com/Sebazzz/SDammann.WebApi.Versioning/tree/vnext) branch. The documentation has not been finalized yet nor a prerelease package has been pushed, but based on [this file](https://github.com/Sebazzz/SDammann.WebApi.Versioning/blob/vnext/src/SDammann.WebApi.Versioning.Tests/Integration/IntegrationTestManager.cs#L54) you should be able to get it working with your project.
 
-Using the library
---------------------------
+
+
+
+
+### Current version documentation
+
+#### Using the library
 Put something like this in your Global.asax `Application_Start`:
 
 	// enable API versioning
@@ -25,16 +29,14 @@ The fully qualified name of the API controllers must include one section that is
 N is an version number. For example: `TestWebsite.Api.Version1.HelloController` is an controller with name
 "Hello" for version 1 of the API. This convention can be changed, see below.
 
-Changing the API controller convention
-------------------------------------------
+#### Changing the API controller convention
 
 It is possible to override the default convention used for detecting a Controller's version. 
 This convention can be changed by assigning a different value to the `VersionedControllerSelector.VersionPrefix` property (new since 1.2).
 
 Make sure to do this very early in your application, for example in the `Application_Start` method in Global.asax.
 
-IHttpControllerSelector implementations
-------------------------------------------
+##### IHttpControllerSelector implementations
 
 `SDammann.WebApi.Versioning.RouteVersionedControllerSelector`:
 	Supports selecting an API controller by the "version" string in the request URI. Requires the routing
@@ -62,8 +64,7 @@ IHttpControllerSelector implementations
 	be in the format of '<mime-type>; version=<number>'. For example: 'application/json; version=1'.
 
 	
-License
------------------------------------------
+## License
 Apache 2.0 license. License details are available in the LICENSE file.
 
 
