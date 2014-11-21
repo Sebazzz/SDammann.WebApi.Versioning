@@ -301,7 +301,7 @@ namespace SDammann.WebApi.Versioning
             foreach (var paramDescriptor in parameterDescriptions.Where(pd => pd.Source == ApiParameterSource.FromUri))
             {
                 Type parameterType = paramDescriptor.ParameterDescriptor.ParameterType;
-                if (parameterType.IsPrimitive || parameterType == typeof(string) || parameterType == typeof(Nullable<>))
+                if (parameterType.Namespace == "System")
                 {
                     parameterValuesForRoute.Add(paramDescriptor.Name, "{" + paramDescriptor.Name + "}");
                 }
