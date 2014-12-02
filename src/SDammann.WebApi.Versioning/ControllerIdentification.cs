@@ -1,78 +1,147 @@
-namespace SDammann.WebApi.Versioning {
+﻿namespace SDammann.WebApi.Versioning {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
-
+    using System.Text;
 
     /// <summary>
-    /// Represents a controller name with an associated version
+    /// Represents an unique identification for a controller 
     /// </summary>
-    public struct ControllerIdentification : IEquatable<ControllerIdentification> {
-        private static readonly Lazy<IEqualityComparer<ControllerIdentification>> ComparerInstance = new Lazy<IEqualityComparer<ControllerIdentification>>(() => new ControllerNameComparer());
+    /// <remarks>
+    /// This class is immutable and implements <see cref="GetHashCode"/>. Derived classes should follow the same rules.
+    /// </remarks>
+    public class ControllerIdentification : IEquatable<ControllerIdentification> {
+        private readonly string _name;
+        private readonly ApiVersion _version;
 
         /// <summary>
-        /// Gets an comparer for comparing <see cref="ControllerIdentification"/> instances
+        /// Gets a short unqualified name for the controller
         /// </summary>
-        public static IEqualityComparer<ControllerIdentification> Comparer {
-            get { return ComparerInstance.Value; }
+        public string Name {
+            get { return this._name; }
         }
 
         /// <summary>
-        /// Gets or sets the name of the controller
+        /// Gets the API version associated with the controller
         /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the associated version
-        /// </summary>
-        public string Version { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ControllerIdentification"/> struct.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="version">The version.</param>
-        public ControllerIdentification(string name, string version)
-                : this() {
-            this.Name = name;
-            this.Version = version;
+        public ApiVersion Version {
+            get { return this._version; }
         }
 
-        public bool Equals(ControllerIdentification other) {
-            return StringComparer.InvariantCultureIgnoreCase.Equals(other.Name, this.Name) &&
-                   other.Version == this.Version;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        public ControllerIdentification(string name, ApiVersion version) {
+            if (name == null) {
+                throw new ArgumentNullException("name");
+            }
+
+            this._name = name;
+            this._version = version;
         }
 
-        public override bool Equals(object obj) {
-            if (obj is ControllerIdentification) {
-                ControllerIdentification cn = (ControllerIdentification)obj;
-                return this.Equals(cn);
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public virtual bool Equals(ControllerIdentification other) {
+            bool isOtherEqual = other != null;
+            isOtherEqual = isOtherEqual && String.Equals(other.Name, this.Name, StringComparison.OrdinalIgnoreCase);
+
+            if (this._version != null) {
+                isOtherEqual = isOtherEqual && this._version.Equals(other.Version);
+            }
+
+            return isOtherEqual;
+        }
+
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public sealed override int GetHashCode() {
+            unchecked {
+                int result = this._name.GetHashCode();
+                if (this._version != null) {
+                    result = this._version.GetHashCode() >> 3 ^ result;
+                }
+
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public sealed override bool Equals(object obj) {
+            ControllerIdentification other = obj as ControllerIdentification;
+            if (other != null) {
+                return this.Equals(other);
             }
 
             return false;
         }
 
-        public override int GetHashCode() {
-            return this.ToString().ToUpperInvariant().GetHashCode();
-        }
-
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
         public override string ToString() {
-            if (this.Version == null) {
-                return this.Name;
-            }
+            StringBuilder stringRepBuilder = new StringBuilder(this._name);
+            stringRepBuilder.Append(" ");
 
-            return string.Format("{0}{1}.{2}", VersionedControllerSelector.VersionPrefix, this.Version.Replace(".", "_"), this.Name);
+            if (this._version != null) {
+                stringRepBuilder.Append("v");
+                stringRepBuilder.Append(this._version);
+            }else {
+                stringRepBuilder.Append("(undefined version)");
+            }
+            
+            return base.ToString();
         }
 
-        private class ControllerNameComparer : IEqualityComparer<ControllerIdentification> {
+        /// <summary>
+        /// Gets an <see cref="IEqualityComparer{T}"/> for this class
+        /// </summary>
+        public static readonly IEqualityComparer<ControllerIdentification> Comparer = new ControllerIdentificationComparer();
+
+        private sealed class ControllerIdentificationComparer : IEqualityComparer<ControllerIdentification> {
+            /// <summary>
+            /// Determines whether the specified objects are equal.
+            /// </summary>
+            /// <returns>
+            /// true if the specified objects are equal; otherwise, false.
+            /// </returns>
             public bool Equals(ControllerIdentification x, ControllerIdentification y) {
+                if (x == null || y == null) {
+                    return x == null && y == null;
+                }
+
                 return x.Equals(y);
             }
 
+            /// <summary>
+            /// Returns a hash code for the specified object.
+            /// </summary>
+            /// <returns>
+            /// A hash code for the specified object.
+            /// </returns>
             public int GetHashCode(ControllerIdentification obj) {
+                if (obj == null) {
+                    throw new ArgumentNullException("obj");
+                }
+
                 return obj.GetHashCode();
             }
         }
