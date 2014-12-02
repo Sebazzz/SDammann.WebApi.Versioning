@@ -1,6 +1,5 @@
 # SDammann.WebApi.Versioning
 
-
 Easy, well-tested, and extendable ASP.NET Web API versioning.
 
 There is also a [Nuget package](https://nuget.org/packages/SDammann.WebApi.Versioning) available.
@@ -63,6 +62,9 @@ Note this is usually not necessary, but if you'd like to go beyond names and ver
 
 ## Contact
 Any questions or remarks? Drop me a twitter message (@sebazzz91) or put an issue in the issue tracker.
+
+## Older version
+The legacy older version (2.x) is available at the [2.x branch](https://github.com/Sebazzz/SDammann.WebApi.Versioning/tree/2.x).
 
 	
 License
