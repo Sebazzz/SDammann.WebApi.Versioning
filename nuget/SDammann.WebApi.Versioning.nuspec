@@ -3,7 +3,7 @@
   <metadata>
     <id>SDammann.WebApi.Versioning</id>
 	<title>ASP.NET Web API versioning support</title>
-    <version>2.6.0.0</version>
+    <version>2.7.0.0</version>
     <authors>Sebastiaan Dammann</authors>
     <owners>Sebastiaan Dammann</owners>
     <licenseUrl>https://github.com/Sebazzz/SDammann.WebApi.Versioning/raw/master/LICENSE</licenseUrl>
@@ -13,6 +13,9 @@
     <tags>aspnet webapi versioning</tags>
 	
 	<releaseNotes xml:space="preserve">
+     Version 2.7.0.0:
+  - Fix for nullable types in VersionedApiExplorer
+    
    Version 2.5.0.0:
   - Updated references
   - Support for attributed routing
