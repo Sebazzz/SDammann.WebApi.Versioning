@@ -98,7 +98,13 @@
         /// <returns></returns>
         protected ControllerIdentification GetControllerIdentificationFromRequest(HttpRequestMessage request) {
             IRequestControllerIdentificationDetector controllerIdentificationDetector = this._requestControllerIdentificationDetector.Value;
-            ControllerIdentification id = controllerIdentificationDetector.GetIdentification(request);
+            ControllerIdentification id;
+
+            try {
+                id = controllerIdentificationDetector.GetIdentification(request);
+            } catch (ApiVersionFormatException ex) {
+                throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.BadRequest, ExceptionResources.CannotDetermineRequestVersion, ex));
+            }
 
             if (id == null) {
                 throw new HttpResponseException(request.CreateResponse(HttpStatusCode.BadRequest, ExceptionResources.CannotDetermineRequestVersion));
