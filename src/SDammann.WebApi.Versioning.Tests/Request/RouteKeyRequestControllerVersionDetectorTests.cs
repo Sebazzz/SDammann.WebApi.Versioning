@@ -57,6 +57,24 @@
             Assert.AreEqual(new Version(3, 93), semVerApiVersion.Version);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException), "Expected an InvalidOperationException to be thrown")]
+        public void DefaultRouteKeyRequestControllerVersionDetector_ThrowsException_WhenNoVersionInApiRoute()
+        {
+            // given
+            const string controllerVersion = "3.93";
+
+            IRequestVersionDetector nameDetector = new DefaultRouteKeyVersionDetector();
+            HttpRequestMessage msg = new HttpRequestMessage();
+            msg.Properties[RouteContextKey] = GetMockingRouteData(new Dictionary<string, object>());
+
+            // when
+            SemVerApiVersion semVerApiVersion = nameDetector.GetVersion(msg) as SemVerApiVersion;
+
+            // then
+            Assert.Inconclusive();
+        }
+
         private static IHttpRouteData GetMockingRouteData(Dictionary<string, object> routeData) {
             var stub = Substitute.For<IHttpRouteData>();
             stub.Values.Returns(routeData);
