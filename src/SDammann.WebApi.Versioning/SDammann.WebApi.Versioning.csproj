@@ -87,6 +87,7 @@
     <Compile Include="Internal\ServicesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\AcceptHeaderRequestVersionDetector.cs" />
+    <Compile Include="Request\ApiVersionFormatException.cs" />
     <Compile Include="Request\DefaultRequestControllerIdentificationDetector.cs" />
     <Compile Include="Request\DefaultRequestControllerNameDetector.cs" />
     <Compile Include="Request\DefaultRouteKeyVersionDetector.cs" />
