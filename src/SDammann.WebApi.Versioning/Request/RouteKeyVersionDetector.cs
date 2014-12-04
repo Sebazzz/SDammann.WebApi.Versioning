@@ -45,7 +45,7 @@
         }
 
         /// <summary>
-        /// Parses the version number from the specified string
+        /// Parses the version number from the specified string or returns <c>null</c> if the version number cannot be parsed
         /// </summary>
         /// <param name="rawVersionNumber"></param>
         /// <returns></returns>
@@ -75,9 +75,12 @@
         /// </summary>
         /// <returns></returns>
         protected string GetStringRouteValue(IHttpRouteData routeData, string routeKey) {
-// Look up controller in route data
+            // Look up controller in route data
             object controllerVersion;
-            routeData.Values.TryGetValue(routeKey, out controllerVersion);
+            if (!routeData.Values.TryGetValue(routeKey, out controllerVersion)) {
+                const string msg = "Cannot retrieve the version number from the routing data. This probably means you haven't included a '{0}' key in your route configuration.";
+                throw new InvalidOperationException(String.Format(msg, this.RouteKey));
+            }
 
             string rawVersionNumber = Convert.ToString(controllerVersion, CultureInfo.InvariantCulture);
             return rawVersionNumber;
