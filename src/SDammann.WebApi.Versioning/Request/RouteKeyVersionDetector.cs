@@ -62,9 +62,9 @@
             }
 
             // parse via default path
-            if (version == null && !Version.TryParse(rawVersionNumber, out version))
-            {
-                return null;
+            if (version == null && !Version.TryParse(rawVersionNumber, out version)) {
+                const string msg = "Cannot parse '{0}' as a version number";
+                throw new ApiVersionFormatException(String.Format(msg, rawVersionNumber));
             }
 
             return version;
