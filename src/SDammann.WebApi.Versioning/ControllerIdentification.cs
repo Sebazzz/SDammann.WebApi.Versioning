@@ -108,7 +108,7 @@
                 stringRepBuilder.Append("(undefined version)");
             }
             
-            return base.ToString();
+            return stringRepBuilder.ToString();
         }
 
         /// <summary>
