@@ -58,6 +58,28 @@
         }
 
         [TestMethod]
+        public void DefaultRouteKeyRequestControllerVersionDetector_ReturnsNullVersion_FromNullVersionRequest()
+        {
+            // given
+            const string controllerVersion = "3.93";
+
+            IRequestVersionDetector nameDetector = new DefaultRouteKeyVersionDetector();
+            HttpRequestMessage msg = new HttpRequestMessage();
+            msg.Properties[RouteContextKey] = GetMockingRouteData(new Dictionary<string, object>() {
+                                                                                                       {
+                                                                                                           "version",
+                                                                                                           null
+                                                                                                       }
+                                                                                                   });
+
+            // when
+            ApiVersion semVerApiVersion = nameDetector.GetVersion(msg);
+
+            // then
+            Assert.IsNull(semVerApiVersion, "Expected version number to be null since it is null in the route also");
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(InvalidOperationException), "Expected an InvalidOperationException to be thrown")]
         public void DefaultRouteKeyRequestControllerVersionDetector_ThrowsException_WhenNoVersionInApiRoute()
         {
