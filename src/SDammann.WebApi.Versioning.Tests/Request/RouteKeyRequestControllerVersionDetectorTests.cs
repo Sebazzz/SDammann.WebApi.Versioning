@@ -67,14 +67,14 @@
             msg.Properties[RouteContextKey] = GetMockingRouteData(new Dictionary<string, object>());
 
             // when
-            SemVerApiVersion semVerApiVersion = nameDetector.GetVersion(msg) as SemVerApiVersion;
+            nameDetector.GetVersion(msg);
 
             // then
             Assert.Inconclusive();
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException), "Expected an FormatException to be thrown")]
+        [ExpectedException(typeof(ApiVersionFormatException), "Expected an FormatException to be thrown")]
         public void DefaultRouteKeyRequestControllerVersionDetector_ThrowsException_WhenApiVersionUnparsable()
         {
             // given
@@ -90,7 +90,7 @@
                                                                                                    });
 
             // when
-            SemVerApiVersion semVerApiVersion = nameDetector.GetVersion(msg) as SemVerApiVersion;
+            nameDetector.GetVersion(msg);
 
             // then
             Assert.Inconclusive();
