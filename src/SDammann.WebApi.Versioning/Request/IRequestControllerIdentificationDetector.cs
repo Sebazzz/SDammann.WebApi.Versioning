@@ -11,6 +11,7 @@
         /// </summary>
         /// <param name="requestMessage"></param>
         /// <returns></returns>
+        /// <exception cref="ApiVersionFormatException">Thrown when the API version cannot be parsed because of an invalid format</exception>
         ControllerIdentification GetIdentification(HttpRequestMessage requestMessage);
     }
 }
