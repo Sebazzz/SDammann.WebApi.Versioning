@@ -37,7 +37,7 @@
         /// because it will be called for all types  in the referenced assemblies during the application initialization phase.
         /// </remarks>
         /// <returns></returns>
-        public ControllerIdentification GetIdentification(HttpRequestMessage requestMessage)
+        public virtual ControllerIdentification GetIdentification(HttpRequestMessage requestMessage)
         {
             string name = GetControllerName(requestMessage);
             ApiVersion version = GetControllerVersion(requestMessage);
