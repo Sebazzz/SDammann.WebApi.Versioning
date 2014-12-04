@@ -62,11 +62,32 @@
         public void DefaultRouteKeyRequestControllerVersionDetector_ThrowsException_WhenNoVersionInApiRoute()
         {
             // given
-            const string controllerVersion = "3.93";
-
             IRequestVersionDetector nameDetector = new DefaultRouteKeyVersionDetector();
             HttpRequestMessage msg = new HttpRequestMessage();
             msg.Properties[RouteContextKey] = GetMockingRouteData(new Dictionary<string, object>());
+
+            // when
+            SemVerApiVersion semVerApiVersion = nameDetector.GetVersion(msg) as SemVerApiVersion;
+
+            // then
+            Assert.Inconclusive();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FormatException), "Expected an FormatException to be thrown")]
+        public void DefaultRouteKeyRequestControllerVersionDetector_ThrowsException_WhenApiVersionUnparsable()
+        {
+            // given
+            const string controllerVersion = "3.unparsable";
+
+            IRequestVersionDetector nameDetector = new DefaultRouteKeyVersionDetector();
+            HttpRequestMessage msg = new HttpRequestMessage();
+            msg.Properties[RouteContextKey] = GetMockingRouteData(new Dictionary<string, object>(){
+                                                                                                       {
+                                                                                                           "version",
+                                                                                                           controllerVersion
+                                                                                                       }
+                                                                                                   });
 
             // when
             SemVerApiVersion semVerApiVersion = nameDetector.GetVersion(msg) as SemVerApiVersion;
