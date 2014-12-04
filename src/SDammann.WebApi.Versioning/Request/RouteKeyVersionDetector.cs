@@ -39,6 +39,10 @@
         protected virtual ApiVersion GetControllerVersionFromRouteData(IHttpRouteData routeData) {
             string rawVersionNumber = this.GetStringRouteValue(routeData, this.RouteKey);
 
+            if (rawVersionNumber == null) {
+                return null;
+            }
+
             Version versionNumber = ParseVersionNumber(rawVersionNumber);
 
             return new SemVerApiVersion(versionNumber);
@@ -82,6 +86,11 @@
                 throw new InvalidOperationException(String.Format(msg, this.RouteKey));
             }
 
+            if (controllerVersion == null) {
+                return null;
+            }
+
+            // convert instead of casting - allows all default values
             string rawVersionNumber = Convert.ToString(controllerVersion, CultureInfo.InvariantCulture);
             return rawVersionNumber;
         }
