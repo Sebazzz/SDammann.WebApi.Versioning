@@ -30,7 +30,7 @@
 
             // the namespace may be null or empty, as a namespace is not required in the CLR
             if (String.IsNullOrEmpty(namespaceName)) {
-                return null;
+                return UndefinedApiVersion.Instance;
             }
 
             return this.GetVersionForNamespace(controllerType, namespaceName.Split('.'));
@@ -76,7 +76,7 @@
 
             // parse via default path
             if (version == null && !Version.TryParse(apiVersionAsParsable, out version)) {
-                return null;
+                return UndefinedApiVersion.Instance;
             }
 
             return new SemVerApiVersion(version);

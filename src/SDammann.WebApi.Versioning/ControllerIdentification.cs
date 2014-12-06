@@ -34,6 +34,9 @@
             if (name == null) {
                 throw new ArgumentNullException("name");
             }
+            if (version == null) {
+                throw new ArgumentNullException("version");
+            }
 
             this._name = name;
             this._version = version;
@@ -67,9 +70,7 @@
         public sealed override int GetHashCode() {
             unchecked {
                 int result = this._name.GetHashCode();
-                if (this._version != null) {
                     result = this._version.GetHashCode() >> 3 ^ result;
-                }
 
                 return result;
             }
@@ -101,7 +102,7 @@
             StringBuilder stringRepBuilder = new StringBuilder(this._name);
             stringRepBuilder.Append(" ");
 
-            if (this._version != null) {
+            if (!(this._version is UndefinedApiVersion)) {
                 stringRepBuilder.Append("v");
                 stringRepBuilder.Append(this._version);
             }else {

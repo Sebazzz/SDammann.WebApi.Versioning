@@ -20,7 +20,7 @@
                 }
             }
 
-            return null;
+            return UndefinedApiVersion.Instance;
         }
     }
 }
