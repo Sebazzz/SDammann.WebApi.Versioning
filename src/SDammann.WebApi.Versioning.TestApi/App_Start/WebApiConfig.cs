@@ -5,10 +5,12 @@
     using System.Web.Hosting;
     using System.Web.Http;
     using System.Web.Http.Dependencies;
+    using System.Web.Http.Description;
     using System.Web.Http.Dispatcher;
     using Areas.HelpPage;
     using Configuration;
     using Discovery;
+    using Documentation;
     using Request;
     using TinyIoC;
 
@@ -23,6 +25,7 @@
 
             // API versioning
             config.Services.Replace(typeof (IHttpControllerSelector), new VersionedApiControllerSelector(config));
+            config.Services.Replace(typeof(IApiExplorer), new VersionedApiExplorer(config));
             config.DependencyResolver = new DependencyResolver(dependencyContainer);
 
             dependencyContainer.Register((c, np) => new DefaultControllerIdentificationDetector(config));

@@ -80,6 +80,7 @@
     <Compile Include="Discovery\NamespaceControllerVersionDetector.cs" />
     <Compile Include="Discovery\TypeNameControllerNameDetector.cs" />
     <Compile Include="Documentation\MultiVersionHttpControllerDescriptor.cs" />
+    <Compile Include="Documentation\VersionedApiExplorer.cs" />
     <Compile Include="ExceptionResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
