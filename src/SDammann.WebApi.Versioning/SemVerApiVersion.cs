@@ -56,5 +56,17 @@
         public override int GetHashCode() {
             return this._version.GetHashCode();
         }
+
+        /// <summary>
+        /// Compares the current <see cref="ApiVersion"/> with another object of the same type. The default version does not allow sorting and returns zero.
+        /// </summary>
+        /// <returns>
+        /// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        protected override int CompareToVersion(ApiVersion other) {
+            return this.Version.CompareTo(((SemVerApiVersion) other).Version);
+        }
     }
 }
