@@ -17,7 +17,7 @@
         /// Gets <see cref="HttpControllerDescriptor"/> per API version
         /// </summary>
         public IReadOnlyDictionary<ApiVersion, HttpControllerDescriptor> DescriptorsPerVersion {
-            [DebuggerStepThrough] get { return _readOnlyDescriptorsPerVersion; }
+            [DebuggerStepThrough] get { return this._readOnlyDescriptorsPerVersion; }
         }
 
         /// <summary>

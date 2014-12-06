@@ -36,8 +36,8 @@
         /// <param name="controllerType">.NET CLR type for controller</param>
         /// <returns></returns>
         public ControllerIdentification GetIdentification(Type controllerType) {
-            string name = GetControllerName(controllerType);
-            ApiVersion version = GetControllerVersion(controllerType);
+            string name = this.GetControllerName(controllerType);
+            ApiVersion version = this.GetControllerVersion(controllerType);
 
             if (name != null) {
                 return new ControllerIdentification(name, version);

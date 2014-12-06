@@ -22,7 +22,7 @@
             // get "accept" HTTP header value
             var acceptHeader = requestMessage.Headers.Accept;
 
-            return GetVersionFromHeader(acceptHeader);
+            return this.GetVersionFromHeader(acceptHeader);
         }
 
         /// <summary>

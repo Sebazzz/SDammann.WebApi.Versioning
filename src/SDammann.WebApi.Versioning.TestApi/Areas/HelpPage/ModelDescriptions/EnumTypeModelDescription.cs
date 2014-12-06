@@ -7,7 +7,7 @@ namespace SDammann.WebApi.Versioning.TestApi.Areas.HelpPage.ModelDescriptions
     {
         public EnumTypeModelDescription()
         {
-            Values = new Collection<EnumValueDescription>();
+            this.Values = new Collection<EnumValueDescription>();
         }
 
         public Collection<EnumValueDescription> Values { get; private set; }

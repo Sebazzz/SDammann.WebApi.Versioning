@@ -32,18 +32,18 @@ namespace SDammann.WebApi.Versioning.TestApi.Areas.HelpPage
                 throw new ArgumentNullException("documentPath");
             }
             XPathDocument xpath = new XPathDocument(documentPath);
-            _documentNavigator = xpath.CreateNavigator();
+            this._documentNavigator = xpath.CreateNavigator();
         }
 
         public string GetDocumentation(HttpControllerDescriptor controllerDescriptor)
         {
-            XPathNavigator typeNode = GetTypeNode(controllerDescriptor.ControllerType);
+            XPathNavigator typeNode = this.GetTypeNode(controllerDescriptor.ControllerType);
             return GetTagValue(typeNode, "summary");
         }
 
         public virtual string GetDocumentation(HttpActionDescriptor actionDescriptor)
         {
-            XPathNavigator methodNode = GetMethodNode(actionDescriptor);
+            XPathNavigator methodNode = this.GetMethodNode(actionDescriptor);
             return GetTagValue(methodNode, "summary");
         }
 
@@ -52,7 +52,7 @@ namespace SDammann.WebApi.Versioning.TestApi.Areas.HelpPage
             ReflectedHttpParameterDescriptor reflectedParameterDescriptor = parameterDescriptor as ReflectedHttpParameterDescriptor;
             if (reflectedParameterDescriptor != null)
             {
-                XPathNavigator methodNode = GetMethodNode(reflectedParameterDescriptor.ActionDescriptor);
+                XPathNavigator methodNode = this.GetMethodNode(reflectedParameterDescriptor.ActionDescriptor);
                 if (methodNode != null)
                 {
                     string parameterName = reflectedParameterDescriptor.ParameterInfo.Name;
@@ -69,7 +69,7 @@ namespace SDammann.WebApi.Versioning.TestApi.Areas.HelpPage
 
         public string GetResponseDocumentation(HttpActionDescriptor actionDescriptor)
         {
-            XPathNavigator methodNode = GetMethodNode(actionDescriptor);
+            XPathNavigator methodNode = this.GetMethodNode(actionDescriptor);
             return GetTagValue(methodNode, "returns");
         }
 
@@ -78,13 +78,13 @@ namespace SDammann.WebApi.Versioning.TestApi.Areas.HelpPage
             string memberName = String.Format(CultureInfo.InvariantCulture, "{0}.{1}", GetTypeName(member.DeclaringType), member.Name);
             string expression = member.MemberType == MemberTypes.Field ? FieldExpression : PropertyExpression;
             string selectExpression = String.Format(CultureInfo.InvariantCulture, expression, memberName);
-            XPathNavigator propertyNode = _documentNavigator.SelectSingleNode(selectExpression);
+            XPathNavigator propertyNode = this._documentNavigator.SelectSingleNode(selectExpression);
             return GetTagValue(propertyNode, "summary");
         }
 
         public string GetDocumentation(Type type)
         {
-            XPathNavigator typeNode = GetTypeNode(type);
+            XPathNavigator typeNode = this.GetTypeNode(type);
             return GetTagValue(typeNode, "summary");
         }
 
@@ -94,7 +94,7 @@ namespace SDammann.WebApi.Versioning.TestApi.Areas.HelpPage
             if (reflectedActionDescriptor != null)
             {
                 string selectExpression = String.Format(CultureInfo.InvariantCulture, MethodExpression, GetMemberName(reflectedActionDescriptor.MethodInfo));
-                return _documentNavigator.SelectSingleNode(selectExpression);
+                return this._documentNavigator.SelectSingleNode(selectExpression);
             }
 
             return null;
@@ -131,7 +131,7 @@ namespace SDammann.WebApi.Versioning.TestApi.Areas.HelpPage
         {
             string controllerTypeName = GetTypeName(type);
             string selectExpression = String.Format(CultureInfo.InvariantCulture, TypeExpression, controllerTypeName);
-            return _documentNavigator.SelectSingleNode(selectExpression);
+            return this._documentNavigator.SelectSingleNode(selectExpression);
         }
 
         private static string GetTypeName(Type type)

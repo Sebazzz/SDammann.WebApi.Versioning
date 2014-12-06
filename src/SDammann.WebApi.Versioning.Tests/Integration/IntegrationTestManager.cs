@@ -35,13 +35,13 @@
 
             DependencyContainer = new TinyIoCContainer();
 
-            IntegrationTestManager._HostingInstance = WebApp.Start<WebApiConfig>(BaseAddress);
+            _HostingInstance = WebApp.Start<WebApiConfig>(BaseAddress);
         }
 
         public static void Shutdown() {
-            if (IntegrationTestManager._HostingInstance != null) {
-                IntegrationTestManager._HostingInstance.Dispose();
-                IntegrationTestManager._HostingInstance = null;
+            if (_HostingInstance != null) {
+                _HostingInstance.Dispose();
+                _HostingInstance = null;
             }
 
             if (DependencyContainer != null) {
@@ -65,8 +65,8 @@
                 config.Services.Replace(typeof(IHttpControllerSelector), new VersionedApiControllerSelector(config));
                 config.DependencyResolver = new DependencyResolver();
 
-                IntegrationTestManager.DependencyContainer.Register((c, np) => new DefaultControllerIdentificationDetector(config));
-                IntegrationTestManager.DependencyContainer.Register((c, np) => new DefaultRequestControllerIdentificationDetector(config));
+                DependencyContainer.Register((c, np) => new DefaultControllerIdentificationDetector(config));
+                DependencyContainer.Register((c, np) => new DefaultRequestControllerIdentificationDetector(config));
 
                 appBuilder.UseWebApi(config);
             }
@@ -88,7 +88,7 @@
                 /// <param name="serviceType">The service to be retrieved.</param>
                 public object GetService(Type serviceType) {
                     try {
-                        return IntegrationTestManager.DependencyContainer.Resolve(serviceType);
+                        return DependencyContainer.Resolve(serviceType);
                     }
                     catch (TinyIoCResolutionException ex) {
                         Debug.WriteLine("Exception in resolving {0}: {1}", serviceType, ex.Message);
@@ -105,7 +105,7 @@
                 /// <param name="serviceType">The collection of services to be retrieved.</param>
                 public IEnumerable<object> GetServices(Type serviceType) {
                     try {
-                        return IntegrationTestManager.DependencyContainer.ResolveAll(serviceType);
+                        return DependencyContainer.ResolveAll(serviceType);
                     }
                     catch (TinyIoCResolutionException ex) {
                         Debug.WriteLine("Exception in resolving {0}: {1}", serviceType, ex.Message);

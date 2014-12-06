@@ -46,8 +46,8 @@
             string prefix = this.VersionPrefix;
 
             // ReSharper disable once LoopCanBeConvertedToQuery -- Don't linqify this, this yields unneeded allocations and thus GCs
-            foreach (string namespacePart in GetPossibleVersionNamespaceParts(namespaceParts, prefix)) {
-                ApiVersion apiVersion = GetApiVersion(namespacePart);
+            foreach (string namespacePart in this.GetPossibleVersionNamespaceParts(namespaceParts, prefix)) {
+                ApiVersion apiVersion = this.GetApiVersion(namespacePart);
 
                 if (apiVersion != null) {
                     return apiVersion;

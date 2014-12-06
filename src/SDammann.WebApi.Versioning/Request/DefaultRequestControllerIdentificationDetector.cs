@@ -35,8 +35,8 @@
         /// <returns></returns>
         public virtual ControllerIdentification GetIdentification(HttpRequestMessage requestMessage)
         {
-            string name = GetControllerName(requestMessage);
-            ApiVersion version = GetControllerVersion(requestMessage);
+            string name = this.GetControllerName(requestMessage);
+            ApiVersion version = this.GetControllerVersion(requestMessage);
 
             if (name != null)
             {

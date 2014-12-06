@@ -32,7 +32,7 @@ namespace SDammann.WebApi.Versioning.TestApi.Areas.HelpPage
         /// <returns>An object of the given type.</returns>
         public object GenerateObject(Type type)
         {
-            return GenerateObject(type, new Dictionary<Type, object>());
+            return this.GenerateObject(type, new Dictionary<Type, object>());
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Here we just want to return null if anything goes wrong.")]
@@ -42,7 +42,7 @@ namespace SDammann.WebApi.Versioning.TestApi.Areas.HelpPage
             {
                 if (SimpleTypeObjectGenerator.CanGenerateObject(type))
                 {
-                    return SimpleObjectGenerator.GenerateObject(type);
+                    return this.SimpleObjectGenerator.GenerateObject(type);
                 }
 
                 if (type.IsArray)
@@ -449,7 +449,7 @@ namespace SDammann.WebApi.Versioning.TestApi.Areas.HelpPage
 
             public object GenerateObject(Type type)
             {
-                return DefaultGenerators[type](++_index);
+                return DefaultGenerators[type](++this._index);
             }
         }
     }

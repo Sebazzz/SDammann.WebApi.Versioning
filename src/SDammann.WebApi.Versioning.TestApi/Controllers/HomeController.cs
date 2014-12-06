@@ -7,7 +7,7 @@ using System.Web.Mvc;
 namespace SDammann.WebApi.Versioning.TestApi.Controllers {
     public class HomeController : Controller {
         public ActionResult Index() {
-            return RedirectToAction("Index", "Help", new {area = ""});
+            return this.RedirectToAction("Index", "Help", new {area = ""});
         }
     }
 }

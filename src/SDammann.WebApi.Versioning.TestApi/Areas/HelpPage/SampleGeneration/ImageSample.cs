@@ -17,7 +17,7 @@ namespace SDammann.WebApi.Versioning.TestApi.Areas.HelpPage
             {
                 throw new ArgumentNullException("src");
             }
-            Src = src;
+            this.Src = src;
         }
 
         public string Src { get; private set; }
@@ -25,17 +25,17 @@ namespace SDammann.WebApi.Versioning.TestApi.Areas.HelpPage
         public override bool Equals(object obj)
         {
             ImageSample other = obj as ImageSample;
-            return other != null && Src == other.Src;
+            return other != null && this.Src == other.Src;
         }
 
         public override int GetHashCode()
         {
-            return Src.GetHashCode();
+            return this.Src.GetHashCode();
         }
 
         public override string ToString()
         {
-            return Src;
+            return this.Src;
         }
     }
 }
