@@ -33,7 +33,7 @@
             ApiVersion version = detector.GetVersion(catControllerType);
 
             // assert
-            Assert.IsNull(version, "Expected a no SemApiVersion instance to be detected");
+            Assert.AreSame(UndefinedApiVersion.Instance, version, "Expected a no SemApiVersion instance to be detected");
         }
     }
 }

@@ -64,7 +64,7 @@
             ApiVersion version = detector.GetVersion(catControllerType);
 
             // assert
-            Assert.IsNull(version, "Expected no version to be detected");
+            Assert.AreSame(UndefinedApiVersion.Instance, version, "Expected no version to be detected");
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@
             ApiVersion version = detector.GetVersion(catControllerType);
 
             // assert
-            Assert.IsNull(version, "Expected no version to be detected");
+            Assert.AreSame(UndefinedApiVersion.Instance, version, "Expected no version to be detected");
         }
     }
 }
