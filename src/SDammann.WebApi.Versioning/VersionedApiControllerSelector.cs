@@ -2,6 +2,7 @@
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Net;
@@ -11,6 +12,7 @@
     using System.Web.Http.Controllers;
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Routing;
+    using Documentation;
     using Internal;
     using Request;
 
@@ -146,7 +148,24 @@
         ///     <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor" />.
         /// </returns>
         public IDictionary<string, HttpControllerDescriptor> GetControllerMapping() {
-            return null; // currently not implemented so return a sane default value
+            Dictionary<string, HttpControllerDescriptor> dict = new Dictionary<string, HttpControllerDescriptor>(this._controllerInfoCache.Value.Select(x => x.Key.Name).Distinct().Count());
+
+            foreach (var controllersByName in this._controllerInfoCache.Value.GroupBy(x => x.Key.Name)) {
+                MultiVersionHttpControllerDescriptor current = null;
+
+                foreach (KeyValuePair<ControllerIdentification, HttpControllerDescriptor> controllerWithVersion in controllersByName.OrderByDescending(x => x.Key.Version)) {
+                    if (current == null) {
+                        current = new MultiVersionHttpControllerDescriptor(controllerWithVersion.Value);
+                    }
+                    
+                    current.AddVersion(controllerWithVersion.Key.Version, controllerWithVersion.Value);
+                }
+
+                Debug.Assert(current != null, "This cannot be run as a grouping contains at least one controller...");
+                dict[controllersByName.Key] = current;
+            }
+
+            return dict;
         }
 
         private ConcurrentDictionary<ControllerIdentification, HttpControllerDescriptor> InitializeControllerInfoCache() {
