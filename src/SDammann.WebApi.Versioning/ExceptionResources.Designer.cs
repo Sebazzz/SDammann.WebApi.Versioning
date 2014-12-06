@@ -70,6 +70,15 @@ namespace SDammann.WebApi.Versioning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to API version is already added.
+        /// </summary>
+        internal static string ApiVersionAlreadyAdded {
+            get {
+                return ResourceManager.GetString("ApiVersionAlreadyAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not determine version and controller name from the request..
         /// </summary>
         internal static string CannotDetermineRequestVersion {
