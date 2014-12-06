@@ -25,7 +25,7 @@
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
         public int CompareTo(ApiVersion other) {
-            if (other == null) {
+            if (other == null || (other is UndefinedApiVersion && !(this is UndefinedApiVersion))) {
                 return 1;
             }
 

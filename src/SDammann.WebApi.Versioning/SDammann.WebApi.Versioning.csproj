@@ -87,6 +87,7 @@
     </Compile>
     <Compile Include="Internal\HttpControllerTypeCache.cs" />
     <Compile Include="Internal\ServicesExtensions.cs" />
+    <Compile Include="UndefinedApiVersion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\AcceptHeaderRequestVersionDetector.cs" />
     <Compile Include="Request\ApiVersionFormatException.cs" />
