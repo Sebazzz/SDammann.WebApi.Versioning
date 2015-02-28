@@ -1,6 +1,9 @@
 namespace SDammann.WebApi.Versioning.Configuration {
     using System;
+    using System.Web.Http;
+    using System.Web.Http.Dispatcher;
     using Discovery;
+    using ErrorHandling;
     using Request;
 
     /// <summary>
@@ -13,6 +16,20 @@ namespace SDammann.WebApi.Versioning.Configuration {
         internal Type ControllerNameDetectorType = typeof(DefaultControllerNameDetector);
         internal Type ControllerVersionDetectorType = typeof(DefaultControllerVersionDetector);
         internal Type ControllerIdentificationDetectorType = typeof(DefaultControllerIdentificationDetector);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration"></param>
+        internal ApiVersioningConfiguration(HttpConfiguration configuration) {
+            ConfigureDefaults(configuration);
+        }
+
+        private static void ConfigureDefaults(HttpConfiguration configuration) {
+            configuration.Services.Replace(typeof(IHttpControllerSelector), new VersionedApiControllerSelector(configuration));
+
+            configuration.Filters.Add(new DefaultExceptionFilter());
+        }
 
         /// <summary>
         /// Configures an type for version detecting on the API request

@@ -1,5 +1,6 @@
 ﻿namespace SDammann.WebApi.Versioning.Configuration {
     using System;
+    using System.Web.Http;
 
     /// <summary>
     /// Helper class for configuring API versioning
@@ -20,8 +21,8 @@
         /// Configure API versioning
         /// </summary>
         /// <returns></returns>
-        public static ApiVersioningConfiguration Configure() {
-            return _Config ?? (_Config = new ApiVersioningConfiguration());
+        public static ApiVersioningConfiguration Configure(HttpConfiguration configuration) {
+            return _Config ?? (_Config = new ApiVersioningConfiguration(configuration));
         }
     }
 }

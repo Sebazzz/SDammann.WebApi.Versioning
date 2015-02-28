@@ -9,6 +9,7 @@
     /// <remarks>
     /// This class is immutable and implements <see cref="GetHashCode"/>. Derived classes should follow the same rules.
     /// </remarks>
+    [Serializable]
     public class ControllerIdentification : IEquatable<ControllerIdentification> {
         private readonly string _name;
         private readonly ApiVersion _version;

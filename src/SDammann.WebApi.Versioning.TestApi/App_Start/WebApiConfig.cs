@@ -31,7 +31,7 @@
             dependencyContainer.Register((c, np) => new DefaultControllerIdentificationDetector(config));
             dependencyContainer.Register((c, np) => new DefaultRequestControllerIdentificationDetector(config));
 
-            ApiVersioning.Configure()
+            ApiVersioning.Configure(config)
                          .ConfigureRequestVersionDetector<DefaultRouteKeyVersionDetector>();
 
             // Web API routes

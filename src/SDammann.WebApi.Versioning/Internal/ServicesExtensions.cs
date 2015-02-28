@@ -4,10 +4,12 @@
     using System.Web.Http.Dependencies;
     using Configuration;
     using Discovery;
+    using ErrorHandling;
     using Request;
 
     internal static class ServicesExtensions {
-        public static IControllerIdentificationDetector GetControllerIdentificationDetector(this IDependencyResolver servicesContainer) {
+        public static IControllerIdentificationDetector GetControllerIdentificationDetector(this IDependencyResolver servicesContainer) 
+        {
             return servicesContainer.GetServiceOrThrow<IControllerIdentificationDetector>(ApiVersioning.Configuration.ControllerIdentificationDetectorType);
         }
 
@@ -34,6 +36,16 @@
         public static IRequestControllerIdentificationDetector GetRequestControllerIdentificationDetector(this IDependencyResolver servicesContainer)
         {
             return servicesContainer.GetServiceOrThrow<IRequestControllerIdentificationDetector>(ApiVersioning.Configuration.RequestControllerIdentificationDetectorType);
+        }
+
+        public static IVersionExceptionFilter GetVersionExceptionFilter(this IDependencyResolver servicesContainer)
+        {
+            try {
+                return servicesContainer.GetServiceOrThrow<IVersionExceptionFilter>(typeof (IVersionExceptionFilter));
+            }
+            catch (InvalidOperationException) {
+                return new VersionExceptionFilter();
+            }
         }
 
         private static TService GetServiceOrThrow<TService>(this IDependencyResolver servicesContainer, Type clrType) where TService : class

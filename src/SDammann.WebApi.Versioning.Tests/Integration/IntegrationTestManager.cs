@@ -15,6 +15,7 @@
     internal static class IntegrationTestManager {
         public const string BaseAddress = "http://localhost:8943/";
 
+        public static HttpConfiguration Configuration;
         private static IDisposable _HostingInstance;
         public static TinyIoCContainer DependencyContainer;
 
@@ -69,6 +70,7 @@
                 DependencyContainer.Register((c, np) => new DefaultRequestControllerIdentificationDetector(config));
 
                 appBuilder.UseWebApi(config);
+                IntegrationTestManager.Configuration = config;
             }
 
             private sealed class DependencyResolver : IDependencyResolver {

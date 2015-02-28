@@ -13,6 +13,7 @@
     using System.Web.Http.Dispatcher;
     using System.Web.Http.Routing;
     using Documentation;
+    using ErrorHandling;
     using Internal;
     using Request;
 
@@ -84,13 +85,11 @@
 
             if (matchingTypes.Count == 0) {
                 // no matching types
-                throw new HttpResponseException(request.CreateResponse(HttpStatusCode.NotFound,
-                    "The API '" + controllerName + "' doesn't exist"));
+                throw ApiControllerNotFoundException.Create(controllerName);
             }
 
             // multiple matching types
-            throw new HttpResponseException(request.CreateResponse(HttpStatusCode.InternalServerError,
-                CreateAmbiguousControllerExceptionMessage(request.GetRouteData().Route, controllerName.Name, matchingTypes)));
+            throw AmbigiousApiRequestException.Create(controllerName, request.GetRouteData().Route, matchingTypes);
         }
 
         /// <summary>
@@ -105,35 +104,16 @@
             try {
                 id = controllerIdentificationDetector.GetIdentification(request);
             } catch (ApiVersionFormatException ex) {
-                throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.BadRequest, ExceptionResources.CannotDetermineRequestVersion, ex));
+                Debug.WriteLine(ex);
+                throw; // rethrow - handled in an exception filter
             }
 
             if (id == null) {
-                throw new HttpResponseException(request.CreateResponse(HttpStatusCode.BadRequest, ExceptionResources.CannotDetermineRequestVersion));
+                throw ApiVersionNotDeterminedException.Create();
             }
 
             return id;
         }
-
-        private static string CreateAmbiguousControllerExceptionMessage(IHttpRoute route, string controllerName, IEnumerable<Type> matchingTypes) {
-            Contract.Assert(route != null);
-            Contract.Assert(controllerName != null);
-            Contract.Assert(matchingTypes != null);
-
-            // Generate an exception containing all the controller types
-            StringBuilder typeList = new StringBuilder();
-            foreach (Type matchedType in matchingTypes)
-            {
-                typeList.AppendLine();
-                typeList.Append(matchedType.FullName);
-            }
-
-            return String.Format(ExceptionResources.AmbigiousControllerRequest,
-                                 controllerName,
-                                 route.RouteTemplate,
-                                 typeList);
-        }
-
 
 
         /// <summary>

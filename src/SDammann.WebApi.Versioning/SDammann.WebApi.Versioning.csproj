@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiVersion.cs" />
+    <Compile Include="ErrorHandling\ApiControllerNotFoundException.cs" />
     <Compile Include="Configuration\ApiVersioning.cs" />
     <Compile Include="Configuration\ApiVersioningConfiguration.cs" />
     <Compile Include="ControllerIdentification.cs" />
@@ -81,6 +82,9 @@
     <Compile Include="Discovery\TypeNameControllerNameDetector.cs" />
     <Compile Include="Documentation\MultiVersionHttpControllerDescriptor.cs" />
     <Compile Include="Documentation\VersionedApiExplorer.cs" />
+    <Compile Include="ErrorHandling\DefaultExceptionFilter.cs" />
+    <Compile Include="ErrorHandling\IVersionExceptionFilter.cs" />
+    <Compile Include="ErrorHandling\VersionExceptionFilter.cs" />
     <Compile Include="ExceptionResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

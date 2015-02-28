@@ -70,6 +70,15 @@ namespace SDammann.WebApi.Versioning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to find controller with name &apos;{0}&apos;.
+        /// </summary>
+        internal static string ApiControllerNotFound {
+            get {
+                return ResourceManager.GetString("ApiControllerNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to API version is already added.
         /// </summary>
         internal static string ApiVersionAlreadyAdded {

@@ -120,6 +120,9 @@
   <data name="AmbigiousControllerRequest" xml:space="preserve">
     <value>Multiple possibilities for {0}, using route template {1}. The following types were selected: {2}.</value>
   </data>
+  <data name="ApiControllerNotFound" xml:space="preserve">
+    <value>Unable to find controller with name '{0}'</value>
+  </data>
   <data name="ApiVersionAlreadyAdded" xml:space="preserve">
     <value>API version is already added</value>
   </data>

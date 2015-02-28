@@ -10,7 +10,7 @@
         public static void Setup(TestContext ctx) {
             IntegrationTestManager.Startup();
 
-            ApiVersioning.Configure()
+            ApiVersioning.Configure(IntegrationTestManager.Configuration)
                          .ConfigureRequestVersionDetector<DefaultRouteKeyVersionDetector>();
         }
 

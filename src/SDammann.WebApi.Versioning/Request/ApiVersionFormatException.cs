@@ -1,12 +1,13 @@
 ﻿namespace SDammann.WebApi.Versioning.Request {
     using System;
     using System.Runtime.Serialization;
+    using ErrorHandling;
 
     /// <summary>
     /// The exception that is thrown when an API version cannot be parsed
     /// </summary>
     [Serializable]
-    public class ApiVersionFormatException : FormatException {
+    public class ApiVersionFormatException : BaseApiException {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.FormatException"/> class.
         /// </summary>
