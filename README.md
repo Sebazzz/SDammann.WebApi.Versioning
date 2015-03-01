@@ -57,8 +57,9 @@ An API version itself is abstracted away as an `ApiVersion`. This is an abstract
 ### Custom exception handling
 By default the library will properly handle exceptions that occur during controller selection itself. In some cases you may want to override or modify the error messages returned to the client by this library. You may do this in two ways:
 
-    1. Implementing a global exception handler and handle any `BaseApiException` derived exception yourself, as per [ASP.NET Web API documentation](http://www.asp.net/web-api/overview/error-handling/web-api-global-error-handling). Note that the library registers it's own exception handler, but you may wish to use your own. In that case you can always delegate any exception handling to `IVersioningExceptionHandler`.
-    2. Implement a custom `IVersioningExceptionHandler`. This exception handler is called by the library when a API versioning error occurs. You can implement your own custom response here. You can also inherit or delegate to `DefaultVersioningExceptionHandler` if you can't or won't handle an exception in certain cases.
+1. Implementing a global exception handler and handle any `BaseApiException` derived exception yourself, as per [ASP.NET Web API documentation](http://www.asp.net/web-api/overview/error-handling/web-api-global-error-handling). Note that the library registers it's own exception handler, but you may wish to use your own. In that case you can always delegate any exception handling to `IVersioningExceptionHandler`.
+
+2. Implement a custom `IVersioningExceptionHandler`. This exception handler is called by the library when a API versioning error occurs. You can implement your own custom response here. You can also inherit or delegate to `DefaultVersioningExceptionHandler` if you can't or won't handle an exception in certain cases.
 
 ### Extending the identification of a controller
 By default, a Web API controller is identified by its version and name (in the form of a `ControllerIdentification` instance). It is possible to extend or modify this behavior. This is done by inheriting from the `ControllerIdentification` class and implementing custom versions of the `IControllerIdentificationDetector` and `IRequestControllerIdentificationDetector` interfaces or extending the default implementations. 
