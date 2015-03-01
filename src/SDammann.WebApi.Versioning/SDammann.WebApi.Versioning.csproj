@@ -87,7 +87,7 @@
     <Compile Include="ErrorHandling\BaseApiException.cs" />
     <Compile Include="ErrorHandling\ApiVersioningExceptionHandler.cs" />
     <Compile Include="ErrorHandling\IVersioningExceptionHandler.cs" />
-    <Compile Include="ErrorHandling\VersioningExceptionHandler.cs" />
+    <Compile Include="ErrorHandling\DefaultVersioningExceptionHandler.cs" />
     <Compile Include="ExceptionResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

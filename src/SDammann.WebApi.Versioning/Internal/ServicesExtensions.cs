@@ -44,7 +44,7 @@
                 return servicesContainer.GetServiceOrThrow<IVersioningExceptionHandler>(typeof (IVersioningExceptionHandler));
             }
             catch (InvalidOperationException) {
-                return new VersioningExceptionHandler();
+                return new DefaultVersioningExceptionHandler();
             }
         }
 

@@ -2,21 +2,19 @@ namespace SDammann.WebApi.Versioning.ErrorHandling {
     using System;
     using System.Net;
     using System.Net.Http;
-    using System.Web.Http;
-    using System.Web.Http.Controllers;
     using System.Web.Http.ExceptionHandling;
     using Request;
 
     /// <summary>
     /// Represents a class that can handle exceptions thrown by the versioning system
     /// </summary>
-    public sealed class VersioningExceptionHandler : IVersioningExceptionHandler {
+    public class DefaultVersioningExceptionHandler : IVersioningExceptionHandler {
         /// <summary>
         /// Handles the specified exception by rethrowing it
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="context"></param>
-        public HttpResponseMessage HandleException(ExceptionContext context, BaseApiException ex) {
+        public virtual HttpResponseMessage HandleException(ExceptionContext context, BaseApiException ex) {
             HttpResponseMessage result = null;
 
             result = result ?? HandleExceptionInternal(context, ex as ApiControllerNotFoundException);
