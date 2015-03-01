@@ -85,9 +85,9 @@
     <Compile Include="Documentation\VersionedApiExplorer.cs" />
     <Compile Include="ErrorHandling\ApiVersionNotDeterminedException.cs" />
     <Compile Include="ErrorHandling\BaseApiException.cs" />
-    <Compile Include="ErrorHandling\DefaultExceptionFilter.cs" />
-    <Compile Include="ErrorHandling\IVersionExceptionFilter.cs" />
-    <Compile Include="ErrorHandling\VersionExceptionFilter.cs" />
+    <Compile Include="ErrorHandling\ApiVersioningExceptionHandler.cs" />
+    <Compile Include="ErrorHandling\IVersioningExceptionHandler.cs" />
+    <Compile Include="ErrorHandling\VersioningExceptionHandler.cs" />
     <Compile Include="ExceptionResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

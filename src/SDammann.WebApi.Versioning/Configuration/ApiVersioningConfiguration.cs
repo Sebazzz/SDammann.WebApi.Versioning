@@ -2,6 +2,7 @@ namespace SDammann.WebApi.Versioning.Configuration {
     using System;
     using System.Web.Http;
     using System.Web.Http.Dispatcher;
+    using System.Web.Http.ExceptionHandling;
     using Discovery;
     using ErrorHandling;
     using Request;
@@ -27,8 +28,7 @@ namespace SDammann.WebApi.Versioning.Configuration {
 
         private static void ConfigureDefaults(HttpConfiguration configuration) {
             configuration.Services.Replace(typeof(IHttpControllerSelector), new VersionedApiControllerSelector(configuration));
-
-            configuration.Filters.Add(new DefaultExceptionFilter());
+            configuration.Services.Replace(typeof(IExceptionHandler), new ApiVersioningExceptionHandler());
         }
 
         /// <summary>

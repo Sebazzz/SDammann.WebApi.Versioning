@@ -79,6 +79,15 @@ namespace SDammann.WebApi.Versioning {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The API &apos;{0}&apos; doesn&apos;t exist.
+        /// </summary>
+        internal static string ApiDoesntExist {
+            get {
+                return ResourceManager.GetString("ApiDoesntExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to API version is already added.
         /// </summary>
         internal static string ApiVersionAlreadyAdded {

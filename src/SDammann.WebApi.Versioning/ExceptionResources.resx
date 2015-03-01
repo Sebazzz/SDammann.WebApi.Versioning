@@ -123,6 +123,9 @@
   <data name="ApiControllerNotFound" xml:space="preserve">
     <value>Unable to find controller with name '{0}'</value>
   </data>
+  <data name="ApiDoesntExist" xml:space="preserve">
+    <value>The API '{0}' doesn't exist</value>
+  </data>
   <data name="ApiVersionAlreadyAdded" xml:space="preserve">
     <value>API version is already added</value>
   </data>

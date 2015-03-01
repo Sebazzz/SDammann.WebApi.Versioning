@@ -15,8 +15,8 @@
     internal static class IntegrationTestManager {
         public const string BaseAddress = "http://localhost:8943/";
 
-        public static HttpConfiguration Configuration;
         private static IDisposable _HostingInstance;
+        internal static Action<HttpConfiguration> ConfigurationCallback;
         public static TinyIoCContainer DependencyContainer;
 
 
@@ -31,11 +31,12 @@
             return client;
         }
 
-        public static void Startup() {
+        public static void Startup(Action<HttpConfiguration> configurationCallback) {
             Shutdown();
 
             DependencyContainer = new TinyIoCContainer();
 
+            ConfigurationCallback = configurationCallback;
             _HostingInstance = WebApp.Start<WebApiConfig>(BaseAddress);
         }
 
@@ -66,11 +67,14 @@
                 config.Services.Replace(typeof(IHttpControllerSelector), new VersionedApiControllerSelector(config));
                 config.DependencyResolver = new DependencyResolver();
 
+                if (ConfigurationCallback != null) {
+                    ConfigurationCallback.Invoke(config);
+                }
+
                 DependencyContainer.Register((c, np) => new DefaultControllerIdentificationDetector(config));
                 DependencyContainer.Register((c, np) => new DefaultRequestControllerIdentificationDetector(config));
 
                 appBuilder.UseWebApi(config);
-                IntegrationTestManager.Configuration = config;
             }
 
             private sealed class DependencyResolver : IDependencyResolver {

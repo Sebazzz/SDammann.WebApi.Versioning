@@ -38,13 +38,13 @@
             return servicesContainer.GetServiceOrThrow<IRequestControllerIdentificationDetector>(ApiVersioning.Configuration.RequestControllerIdentificationDetectorType);
         }
 
-        public static IVersionExceptionFilter GetVersionExceptionFilter(this IDependencyResolver servicesContainer)
+        public static IVersioningExceptionHandler GetVersionExceptionFilter(this IDependencyResolver servicesContainer)
         {
             try {
-                return servicesContainer.GetServiceOrThrow<IVersionExceptionFilter>(typeof (IVersionExceptionFilter));
+                return servicesContainer.GetServiceOrThrow<IVersioningExceptionHandler>(typeof (IVersioningExceptionHandler));
             }
             catch (InvalidOperationException) {
-                return new VersionExceptionFilter();
+                return new VersioningExceptionHandler();
             }
         }
 

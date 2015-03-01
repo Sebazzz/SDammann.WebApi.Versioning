@@ -1,16 +1,16 @@
 ﻿namespace SDammann.WebApi.Versioning.ErrorHandling {
-    using System;
-    using System.Web.Http.Controllers;
+    using System.Net.Http;
+    using System.Web.Http.ExceptionHandling;
 
     /// <summary>
     /// Represents the interface for a handler that can handle exceptions thrown by the versioning system
     /// </summary>
-    public interface IVersionExceptionFilter {
+    public interface IVersioningExceptionHandler {
         /// <summary>
         /// Handles the specified exception by rethrowing it
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="context"></param>
-        void HandleException(HttpControllerContext context, BaseApiException ex);
+        HttpResponseMessage HandleException(ExceptionContext context, BaseApiException ex);
     }
 }
