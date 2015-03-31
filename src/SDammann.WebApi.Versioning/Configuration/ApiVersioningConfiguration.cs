@@ -119,7 +119,7 @@ namespace SDammann.WebApi.Versioning.Configuration {
         /// Configures an type for detecting the version of a controller
         /// </summary>
         public ApiVersioningConfiguration ConfigureControllerVersionDetector<TControllerVersionDetector>() where TControllerVersionDetector : IControllerVersionDetector {
-            return this.ConfigureControllerNameDetector(typeof(TControllerVersionDetector));
+            return this.ConfigureControllerVersionDetector(typeof(TControllerVersionDetector));
         }
 
         /// <summary>
