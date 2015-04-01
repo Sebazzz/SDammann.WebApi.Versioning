@@ -70,7 +70,7 @@
         /// </returns>
         public sealed override int GetHashCode() {
             unchecked {
-                int result = this._name.ToLower().GetHashCode();
+                int result = this._name.ToLowerInvariant().GetHashCode();
                     result = this._version.GetHashCode() >> 3 ^ result;
 
                 return result;
