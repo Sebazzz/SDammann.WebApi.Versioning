@@ -3,7 +3,7 @@
   <metadata>
     <id>SDammann.WebApi.Versioning</id>
 	  <title>ASP.NET Web API versioning support</title>
-    <version>3.0.0.0-beta3</version>
+    <version>3.0.0.0-beta4</version>
     <authors>Sebastiaan Dammann and contributors</authors>
     <owners>Sebastiaan Dammann</owners>
     <licenseUrl>https://github.com/Sebazzz/SDammann.WebApi.Versioning/raw/master/LICENSE</licenseUrl>
