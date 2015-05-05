@@ -59,9 +59,9 @@
                 try {
                     service = Activator.CreateInstance(clrType) as TService;
                 }
-                catch (Exception) {
+                catch (Exception ex) {
                     throw new InvalidOperationException(
-                        String.Format(ExceptionResources.DependencyContainerNotConfigured, clrType.FullName));
+                        String.Format(ExceptionResources.DependencyContainerNotConfigured, clrType.FullName), ex);
                 }
             }
 
