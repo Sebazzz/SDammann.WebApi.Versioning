@@ -187,7 +187,7 @@
             else
                 controllerName = GetControllerNameFromSubRouteData(subRoute);
 
-            return controllerName.ToString();
+            return controllerName?.ToString();
         }
 
         private string GetControllerNameFromSubRouteData(IHttpRouteData pRouteData)
