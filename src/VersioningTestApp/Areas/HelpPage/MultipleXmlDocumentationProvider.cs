@@ -80,7 +80,7 @@ namespace VersioningTestApp.Areas.HelpPage
 							GetTagValueForAction(methodNode, "remarks")
 						};
 
-			// Add message if controller requires authorization
+			// Add message if action requires authorization
 			if (actionDescriptor.GetCustomAttributes<AuthorizeAttribute>().Any())
 			{
 				s.Add("<p><i class='fa fa-lock'></i> Requires authorization!</p>");
@@ -176,7 +176,6 @@ namespace VersioningTestApp.Areas.HelpPage
 
 			var s = new[]
 						{
-							GetTagValue(methodNode, "summary"),
 							GetTagValue(methodNode, "returns")
 						};
 
