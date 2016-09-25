@@ -33,12 +33,8 @@
             }
 
             // Look up controller in route data
-            string controllerName;
+            var controllerName = GetControllerNameFromRequest(request);
             var subRoute = (routeData.GetSubRoutes() ?? Enumerable.Empty<IHttpRouteData>()).FirstOrDefault();
-            if (subRoute == null)
-                controllerName = this.GetControllerNameFromRequest(request);
-            else
-                controllerName = getControllerNameFromSubRouteData(subRoute);
 
             // Also try the version if possible
             object apiVersionObj;
@@ -57,15 +53,6 @@
             }
 
             return new ControllerIdentification(controllerName, apiVersion);
-        }
-
-        private string getControllerNameFromSubRouteData(IHttpRouteData pRouteData)
-        {
-            var descriptors = pRouteData.Route.DataTokens["actions"] as HttpActionDescriptor[];
-            if (descriptors == null || descriptors.Length == 0)
-                return string.Empty;
-
-            return descriptors[0].ControllerDescriptor.ControllerName;
         }
     }
 }

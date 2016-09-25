@@ -18,7 +18,7 @@
                 <tr>
                     <td class="parameter-name">@parameter.Name</td>
                     <td class="parameter-documentation">
-                        <p>@parameter.Documentation</p>
+                        <p>@Html.Raw(parameter.Documentation)</p>
                     </td>
                     <td class="parameter-type">
                         @Html.DisplayFor(m => modelDescription.ModelType, "ModelDescriptionLink", new { modelDescription = modelDescription })
@@ -45,4 +45,3 @@ else
 {
     <p>None.</p>
 }
-

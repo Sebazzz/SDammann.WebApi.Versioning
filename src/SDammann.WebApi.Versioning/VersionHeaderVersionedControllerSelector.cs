@@ -15,11 +15,16 @@
         /// </summary>
         public const string ApiVersionHeaderName = "X-Api-Version";
 
+        private readonly string _defaultVersion;
+
         /// <summary>
         ///   Initializes a new instance of the <see cref="VersionHeaderVersionedControllerSelector" /> class.
         /// </summary>
         /// <param name="configuration"> The configuration. </param>
-        public VersionHeaderVersionedControllerSelector (HttpConfiguration configuration) : base(configuration) {
+        /// <param name="defaultVersion"> Default API version. </param>
+        public VersionHeaderVersionedControllerSelector (HttpConfiguration configuration, string defaultVersion = null) : base(configuration)
+        {
+            _defaultVersion = defaultVersion;
         }
 
         protected override ControllerIdentification GetControllerIdentificationFromRequest (HttpRequestMessage request) {
@@ -29,7 +34,7 @@
 
             // get the version number from the HTTP header
             IEnumerable<string> values;
-            string apiVersion = null;
+            string apiVersion = _defaultVersion;
             if (request.Headers.TryGetValues(ApiVersionHeaderName, out values)) {
                 foreach (string value in values) {
                     if (!String.IsNullOrWhiteSpace(value)) {

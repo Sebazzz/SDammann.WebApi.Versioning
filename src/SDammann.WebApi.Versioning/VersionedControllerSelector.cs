@@ -180,11 +180,23 @@
                 return default(String);
             }
 
-            // Look up controller in route data
             object controllerName;
-            routeData.Values.TryGetValue(ControllerKey, out controllerName);
+            var subRoute = (routeData.GetSubRoutes() ?? Enumerable.Empty<IHttpRouteData>()).FirstOrDefault();
+            if (subRoute == null)
+                routeData.Values.TryGetValue(ControllerKey, out controllerName);
+            else
+                controllerName = GetControllerNameFromSubRouteData(subRoute);
 
-            return controllerName.ToString();
+            return controllerName?.ToString();
+        }
+
+        private string GetControllerNameFromSubRouteData(IHttpRouteData pRouteData)
+        {
+            var descriptors = pRouteData.Route.DataTokens["actions"] as HttpActionDescriptor[];
+            if (descriptors == null || descriptors.Length == 0)
+                return string.Empty;
+
+            return descriptors[0].ControllerDescriptor.ControllerName;
         }
 
         protected abstract ControllerIdentification GetControllerIdentificationFromRequest (HttpRequestMessage request);
